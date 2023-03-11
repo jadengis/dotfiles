@@ -1,0 +1,16 @@
+# vim: filetype=neomuttrc
+
+# general bindings
+bind index g noop
+bind index gg first-entry
+bind index G last-entry
+bind pager,browser gg top-page
+bind pager,browser G bottom-page
+
+# sidebar mappings
+bind index,pager \Ck sidebar-prev
+bind index,pager \Cj sidebar-next
+bind index,pager \Co sidebar-open
+bind index,pager \Cp sidebar-prev-new
+bind index,pager \Cn sidebar-next-new
+bind index,pager B sidebar-toggle-visible

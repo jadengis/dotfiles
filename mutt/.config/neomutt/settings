@@ -1,0 +1,43 @@
+# vim: filetype=muttrc
+
+# set editor to neovim
+set editor = "nvim"
+
+set real_name = "John Dengis"
+set imap_check_subscribed
+
+# Set preferred view modes
+auto_view text/html text/calendar application/ics # view html automatically
+alternative_order text/html text/plain text/enriched text/*
+
+# Main options
+# set edit headers
+set mbox_type = Maildir
+set mail_check_stats
+set fast_reply
+set askcc                            # ask for CC:
+set fcc_attach                       # save attachments with the body
+
+set reply_to
+set reverse_name                     # reply with name from inbound email
+
+set include
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode
+set forward_quote
+
+set sort = threads                   # sort mail in threads
+set sort_aux = reverse-last-date-received
+set charset = "utf-8"
+
+set mailcap_path = ~/.config/neomutt/mailcap
+set header_cache = "~/.cache/mutt"
+set message_cachedir = "~/.cache/mutt"
+
+# Pager
+set pager_context = 3
+set pager_index_lines = 20
+
+# Sidebar
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"

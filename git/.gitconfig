@@ -1,0 +1,13 @@
+[user]
+	name = John Dengis
+	email = jadengis@gmail.com
+	signingkey = B21BF346BFB92D2F
+[core]
+	editor = nvim
+[merge]
+  conflictstyle = diff3
+  tool = nvimdiff3
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true

@@ -1,0 +1,9 @@
+# HTML
+text/html; elinks -dump -dump-color-mode 1; copiousoutput;
+
+# PDFs
+application/pdf; /usr/bin/open %s
+
+# Images
+image/png; /usr/bin/open %s
+image/jpeg; /usr/bin/open %s

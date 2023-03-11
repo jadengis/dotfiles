@@ -1,0 +1,23 @@
+# vim: filetype=muttrc
+
+source ~/.config/neomutt/settings
+source ~/.config/neomutt/bindings
+source ~/.config/neomutt/colors
+
+set from = "jadengis@gmail.com"
+set envelope_from
+
+set folder = imaps://imap.gmail.com/
+set imap_user = jadengis@gmail.com
+set imap_pass = "`pass Gmail/jadengis`"
+unset imap_passive
+set imap_keepalive = 300
+set smtp_url = smtps://jadengis@smtp.gmail.com
+set smtp_pass = $imap_pass
+set mail_check = 120
+
+set spoolfile = +INBOX
+set postponed = +[Gmail]/Drafts
+set trash = +[Gmail]/Bin
+
+mailboxes = +INBOX
