@@ -2,6 +2,7 @@
 
 source ~/.config/neomutt/settings
 source ~/.config/neomutt/bindings
+source ~/.config/neomutt/macros
 source ~/.config/neomutt/colors
 
 set from = "jadengis@gmail.com"

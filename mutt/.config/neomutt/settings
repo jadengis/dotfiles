@@ -29,6 +29,8 @@ set forward_quote
 set sort = threads                   # sort mail in threads
 set sort_aux = reverse-last-date-received
 set charset = "utf-8"
+set markers = no
+set smart_wrap = no
 
 set mailcap_path = ~/.config/neomutt/mailcap
 set header_cache = "~/.cache/mutt"
