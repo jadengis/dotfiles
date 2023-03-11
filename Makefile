@@ -7,7 +7,7 @@ clean: $(CLEAN_PACKAGES)
 .PHONY: all clean $(ALL_PACKAGES) $(CLEAN_PACKAGES)
 
 $(ALL_PACKAGES):
-	stow --no-folding --target=$(HOME_DIR) $@
+	stow --no-folding --target=${HOME} $@
 
 $(CLEAN_PACKAGES):
-	stow --target=$(HOME_DIR) --delete $(@:clean_%=%)
+	stow --target=${HOME} --delete $(@:clean_%=%)
