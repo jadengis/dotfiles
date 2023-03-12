@@ -98,7 +98,7 @@ return packer.startup(function(use)
 
   -- DAP
   use "mfussenegger/nvim-dap" -- enable DAP
-  use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+  use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap" } }
 
   -- Telescope
   use "nvim-telescope/telescope.nvim"
