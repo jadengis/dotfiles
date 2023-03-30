@@ -80,7 +80,25 @@ return packer.startup(function(use)
     },
   } -- npm completions
   use "saadparwaiz1/cmp_luasnip" -- snippet completions
-  -- use "github/copilot.vim" -- GitHub Co-pilot
+  --[[ use "github/copilot.vim" -- GitHub Co-pilot ]]
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "VimEnter",
+    config = function()
+      require("copilot").setup {
+        suggestion = { enabled = false },
+        panel = { enabled = false }
+      }
+    end
+  }
+  use {
+    "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua" },
+    config = function()
+      require("copilot_cmp").setup {}
+    end
+  }
 
   -- snippets
   use "L3MON4D3/LuaSnip" -- snippet engine
@@ -119,6 +137,9 @@ return packer.startup(function(use)
 
   -- Git
   use "lewis6991/gitsigns.nvim"
+
+  -- Hook into activitywatch.
+  use "ActivityWatch/aw-watcher-vim"
 
   -- Automatically set up your configuratin after cloning packer.nvim
   -- Put this at the end after all plugins
