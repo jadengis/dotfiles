@@ -1,0 +1,16 @@
+# vim: filetype=neomuttrc
+unmailboxes *
+
+set from = "`pass Mail/Personal/Email`"
+set folder = "~/Mail/Personal"
+
+# mailbox settings
+set spool_file = +INBOX
+set postponed = +Drafts
+set record = +Sent
+set trash = +Trash
+set mbox = +Archive
+
+mailboxes =INBOX =INBOX.PlanEngine =INBOX.Ezfire =INBOX.ReplayValue
+mailboxes =Archive =Archive.PlanEngine =Archive.Ezfire =Archive.ReplayValue
+mailboxes =Trash =Sent =Drafts =Spam

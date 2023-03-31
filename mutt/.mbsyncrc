@@ -1,0 +1,27 @@
+### Fastmail
+
+IMAPAccount fastmail
+Host imap.fastmail.com
+Port 993
+UserCmd "pass Mail/Personal/Email"
+PassCmd "pass Mail/Personal/IMAP"
+SSLType IMAPS
+
+IMAPStore fastmail-remote
+Account fastmail
+
+MaildirStore fastmail-local
+Path ~/Mail/Personal/
+Inbox ~/Mail/Personal/INBOX
+Flatten .
+
+Channel fastmail
+Far :fastmail-remote:
+Near :fastmail-local:
+Patterns *
+SyncState *
+Create Both
+Expunge Both
+CopyArrivalDate yes
+
+###

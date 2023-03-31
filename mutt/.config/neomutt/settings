@@ -14,6 +14,8 @@ alternative_order text/html text/plain text/enriched text/*
 # set edit headers
 set mbox_type = Maildir
 set mail_check_stats
+set use_envelope_from
+set sendmail = "msmtp"
 set fast_reply
 set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
