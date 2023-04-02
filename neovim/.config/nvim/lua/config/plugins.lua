@@ -148,6 +148,12 @@ return packer.startup(function(use)
 				load = {
 					["core.defaults"] = {}, -- Load all the default modules
 					["core.norg.concealer"] = {}, -- Allows for use of icons
+					["core.norg.completion"] = {
+						config = {
+							name = "[neorg]",
+							engine = "nvim-cmp",
+						},
+					},
 					["core.norg.dirman"] = { -- Manage your directories with Neorg
 						config = {
 							workspaces = {

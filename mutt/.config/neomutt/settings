@@ -38,6 +38,9 @@ set mailcap_path = ~/.config/neomutt/mailcap
 set header_cache = "~/.cache/mutt"
 set message_cachedir = "~/.cache/mutt"
 
+# Index
+set index_format = "%4C %Z %{%b %d, %Y} %-20.20L %-40.40a (%?l?%4l&%4c?) %s"
+
 # Pager
 set pager_context = 3
 set pager_index_lines = 20
