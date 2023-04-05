@@ -3,7 +3,5 @@
 macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
 
 # Arcive and Trash messages
-bind index,pager d noop
-macro index,pager dd ":set confirmappend=no delete=yes<enter><tag-prefix><delete-message>:set confirmappend=yes delete=ask-yes<enter>" "delete tagged messages"
-macro index,pager da ":set confirmappend=no delete=yes<enter><tag-prefix><save-message>=Archive<enter>:set confirmappend=yes delete=ask-yes<enter>" "archive tagged messages"
+macro index,pager A ":set confirmappend=no delete=yes<enter><save-message>=Archive<enter>:set confirmappend=yes delete=ask-yes<enter>" "archive tagged messages"
 
