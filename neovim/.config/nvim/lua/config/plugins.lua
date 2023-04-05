@@ -143,27 +143,7 @@ return packer.startup(function(use)
 	use({
 		"nvim-neorg/neorg",
 		run = ":Neorg sync-parsers",
-		config = function()
-			require("neorg").setup({
-				load = {
-					["core.defaults"] = {}, -- Load all the default modules
-					["core.norg.concealer"] = {}, -- Allows for use of icons
-					["core.norg.completion"] = {
-						config = {
-							name = "[neorg]",
-							engine = "nvim-cmp",
-						},
-					},
-					["core.norg.dirman"] = { -- Manage your directories with Neorg
-						config = {
-							workspaces = {
-								personal = "~/notes/personal",
-							},
-						},
-					},
-				},
-			})
-		end,
+		config = require("config.neorg").setup,
 	})
 
 	-- Automatically set up your configuratin after cloning packer.nvim
