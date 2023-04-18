@@ -4,6 +4,10 @@ unmailboxes *
 set from = "`pass Mail/Personal/Email`"
 set folder = "~/Mail/Personal"
 
+alternates john@planengine.io 
+alternates john@ezfire.io
+alternates john@getreplayvalue.com
+
 # mailbox settings
 set spool_file = +INBOX
 set postponed = +Drafts
