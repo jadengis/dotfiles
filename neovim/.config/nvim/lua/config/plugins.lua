@@ -125,7 +125,7 @@ return packer.startup(function(use)
 	-- Treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
-		commit = "d47f3469e3a783e7d1382ab3fe95ba2fa3021ec0",
+		--[[ commit = "d47f3469e3a783e7d1382ab3fe95ba2fa3021ec0", ]]
 		run = ":TSUpdate",
 	})
 	use("nvim-treesitter/playground")
@@ -142,6 +142,7 @@ return packer.startup(function(use)
 
 	use({
 		"nvim-neorg/neorg",
+    tag = "v3.1.0",
 		run = ":Neorg sync-parsers",
 		config = require("config.neorg").setup,
 	})

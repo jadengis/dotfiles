@@ -5,4 +5,16 @@ if not status_ok then
   return
 end
 
+-- Workaround for session buffer
+vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+  pattern = 'NvimTree*',
+  callback = function()
+    local api = require('nvim-tree.api')
+
+    if not api.tree.is_visible() then
+      api.tree.open()
+    end
+  end,
+})
+
 auto_session.setup {}
