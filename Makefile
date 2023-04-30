@@ -1,5 +1,4 @@
-HOME_DIR := ~
-ALL_PACKAGES := git mutt neovim
+ALL_PACKAGES := asdf git mutt neovim
 CLEAN_PACKAGES := $(ALL_PACKAGES:%=clean_%)
 
 all: $(ALL_PACKAGES)
