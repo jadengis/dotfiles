@@ -73,6 +73,9 @@ end
 M.on_attach = function(client, bufnr)
   lsp_keymaps(bufnr)
   lsp_highlight_document(client)
+  
+  -- Ignore semantic tokens for now due to bad highlights in the current colorscheme.
+  client.server_capabilities.semanticTokensProvider = nil
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()

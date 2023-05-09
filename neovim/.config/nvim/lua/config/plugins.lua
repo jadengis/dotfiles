@@ -43,14 +43,13 @@ return packer.startup(function(use)
 	use("wbthomason/packer.nvim") -- Have packer manage itself
 	use("nvim-lua/popup.nvim") -- An implementation of the Popup API frim vim in Neovim
 	use("nvim-lua/plenary.nvim") -- Useful lua functions used by lots of plugins
-	use("gpanders/editorconfig.nvim") -- Respect editor config.
 	use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp
 	use("numToStr/Comment.nvim") -- Easily comment stuff
 	use("kyazdani42/nvim-web-devicons")
 	use("kyazdani42/nvim-tree.lua")
 	use("akinsho/bufferline.nvim")
-	use("moll/vim-bbye")
 	use("nvim-lualine/lualine.nvim")
+	use("moll/vim-bbye")
 	use("lewis6991/impatient.nvim")
 	use("lukas-reineke/indent-blankline.nvim")
 	use("akinsho/toggleterm.nvim")
@@ -59,7 +58,6 @@ return packer.startup(function(use)
 		requires = "kyazdani42/nvim-web-devicons",
 	})
 	use("rmagatti/auto-session")
-	use("delphinus/vim-firestore")
 	use("norcalli/nvim-colorizer.lua")
 	use("rcarriga/nvim-notify")
 	-- use "folke/which-key.nvim"
@@ -125,20 +123,17 @@ return packer.startup(function(use)
 	-- Treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
-		--[[ commit = "d47f3469e3a783e7d1382ab3fe95ba2fa3021ec0", ]]
 		run = ":TSUpdate",
 	})
 	use("nvim-treesitter/playground")
-	--[[ use "nvim-treesitter/nvim-treesitter-angular" -- Currently broken with new version of TS ]]
 	use("jadengis/nvim-ts-autotag")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
-	-- use "p00f/nvim-ts-rainbow"
 
 	-- Git
 	use("lewis6991/gitsigns.nvim")
 
 	-- Hook into activitywatch.
-	use("ActivityWatch/aw-watcher-vim")
+	--[[ use("ActivityWatch/aw-watcher-vim") ]]
 
 	use({
 		"nvim-neorg/neorg",
