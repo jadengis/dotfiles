@@ -45,8 +45,8 @@ return packer.startup(function(use)
 	use("nvim-lua/plenary.nvim") -- Useful lua functions used by lots of plugins
 	use("windwp/nvim-autopairs") -- Autopairs, integrates with both cmp
 	use("numToStr/Comment.nvim") -- Easily comment stuff
-	use("kyazdani42/nvim-web-devicons")
-	use("kyazdani42/nvim-tree.lua")
+	use("nvim-tree/nvim-web-devicons")
+	use("nvim-tree/nvim-tree.lua")
 	use("akinsho/bufferline.nvim")
 	use("nvim-lualine/lualine.nvim")
 	use("moll/vim-bbye")
@@ -55,7 +55,7 @@ return packer.startup(function(use)
 	use("akinsho/toggleterm.nvim")
 	use({
 		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
+		requires = "nvim-tree/nvim-web-devicons",
 	})
 	use("rmagatti/auto-session")
 	use("norcalli/nvim-colorizer.lua")
@@ -134,10 +134,9 @@ return packer.startup(function(use)
 
 	-- Hook into activitywatch.
 	--[[ use("ActivityWatch/aw-watcher-vim") ]]
-
 	use({
 		"nvim-neorg/neorg",
-    tag = "v3.1.0",
+		tag = "v3.1.0",
 		run = ":Neorg sync-parsers",
 		config = require("config.neorg").setup,
 	})
