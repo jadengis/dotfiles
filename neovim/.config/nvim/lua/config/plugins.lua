@@ -109,6 +109,14 @@ return packer.startup(function(use)
 	use("jose-elias-alvarez/null-ls.nvim") -- for formatters and linters
 	use("onsails/lspkind.nvim")
 	use("RRethy/vim-illuminate")
+	use({ "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }) -- Breadrumbs
+	use({
+		"utilyre/barbecue.nvim",
+		requires = { "SmiteshP/nvim-navic", "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("barbecue").setup({ attach_navic = false })
+		end,
+	})
 	use("folke/neodev.nvim") -- Neovim specific completions.
 
 	-- DAP
