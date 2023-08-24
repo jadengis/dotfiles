@@ -52,7 +52,6 @@ return packer.startup(function(use)
 	use("moll/vim-bbye")
 	use("lewis6991/impatient.nvim")
 	use("lukas-reineke/indent-blankline.nvim")
-	use("akinsho/toggleterm.nvim")
 	use({
 		"folke/trouble.nvim",
 		requires = "nvim-tree/nvim-web-devicons",

@@ -6,7 +6,7 @@ end
 local lspconfig = require("lspconfig")
 
 local servers = { "angularls", "tsserver", "jsonls", "html", "cssls", "tailwindcss", "erlangls", "elixirls",
-  "lua_ls", "vale_ls" }
+  "lua_ls", "vale_ls", "sorbet" }
 
 lsp_installer.setup {
   ensure_installed = servers,
