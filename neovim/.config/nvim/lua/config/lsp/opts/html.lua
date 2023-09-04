@@ -13,6 +13,9 @@ local opts = {
         references = true,
       }
     },
+  },
+  breadcrumbs = {
+    filetypes = { "html", "heex" },
   }
 }
 return opts

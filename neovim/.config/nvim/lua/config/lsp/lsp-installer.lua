@@ -1,27 +1,39 @@
 local status_ok, lsp_installer = pcall(require, "mason-lspconfig")
 if not status_ok then
-  return
+	return
 end
 
 local lspconfig = require("lspconfig")
 
-local servers = { "angularls", "tsserver", "jsonls", "html", "cssls", "tailwindcss", "erlangls", "elixirls",
-  "lua_ls", "vale_ls", "sorbet" }
-
-lsp_installer.setup {
-  ensure_installed = servers,
+local servers = {
+	"angularls",
+	"tsserver",
+	"jsonls",
+	"html",
+	"cssls",
+	"tailwindcss",
+	"erlangls",
+	"elixirls",
+	"lua_ls",
+	"vale_ls",
+	"sorbet",
 }
 
-for _, server in pairs(servers) do
-  local opts = {
-    on_attach = require("config.lsp.handlers").on_attach,
-    capabilities = require("config.lsp.handlers").capabilities,
-  }
+lsp_installer.setup({
+	ensure_installed = servers,
+})
 
-  -- Apply custom settings for all required LSPs
-  local has_custom_opts, server_custom_opts = pcall(require, "config.lsp.opts." .. server)
-  if has_custom_opts then
-    opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
-  end
-  lspconfig[server].setup(opts)
+for _, server in pairs(servers) do
+	-- Apply custom settings for all required LSPs
+	local opts = {}
+	local has_custom_opts, server_custom_opts = pcall(require, "config.lsp.opts." .. server)
+	if has_custom_opts then
+		opts = server_custom_opts
+	end
+	local client = require("config.lsp.client").setup(opts)
+	opts = vim.tbl_deep_extend("force", opts, {
+		on_attach = client.on_attach,
+		capabilities = client.capabilities,
+	})
+	lspconfig[server].setup(opts)
 end
