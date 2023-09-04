@@ -106,13 +106,6 @@ keymap("n", "<leader>cc", "<cmd>cclose<cr>", opts) -- Close quick fix
 keymap("n", "<S-q>", "<cmd>Bdelete!<cr>", opts) -- Close buffer without close window
 keymap("n", "<A-Q>", "<cmd>qa<cr>", opts) -- Close buffer without close window
 
--- Trouble
-keymap("n", "<leader>xx", "<cmd>TroubleToggle<cr>", opts)
-keymap("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", opts)
-keymap("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", opts)
-keymap("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", opts)
-keymap("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", opts)
-
 -- DAP
 keymap("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>", opts)
 keymap("n", "<leader>dc", "<cmd>DapContinue<cr>", opts)
