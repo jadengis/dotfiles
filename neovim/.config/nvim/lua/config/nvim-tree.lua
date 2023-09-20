@@ -99,54 +99,48 @@ local function on_attach(bufnr)
 
 end
 
+local HEIGHT_RATIO = 0.8
+local WIDTH_RATIO = 0.5
+
 nvim_tree.setup {
   on_attach = on_attach,
-  auto_reload_on_write = true,
   create_in_closed_folder = false,
   disable_netrw = true,
   hijack_cursor = false,
   hijack_netrw = true,
-  hijack_unnamed_buffer_when_opening = false,
   open_on_tab = false,
   sort_by = "name",
   update_cwd = false,
-  reload_on_bufenter = false,
-  respect_buf_cwd = false,
   view = {
-    adaptive_size = false,
-    width = 30,
-    hide_root_folder = false,
-    side = "left",
-    preserve_window_proportions = false,
-    number = false,
-    relativenumber = false,
-    signcolumn = "yes",
+    float = {
+      enable = true,
+      open_win_config = function()
+        local screen_w = vim.opt.columns:get()
+        local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+        local window_w = screen_w * WIDTH_RATIO
+        local window_h = screen_h * HEIGHT_RATIO
+        local window_w_int = math.floor(window_w)
+        local window_h_int = math.floor(window_h)
+        local center_x = (screen_w - window_w) / 2
+        local center_y = ((vim.opt.lines:get() - window_h) / 2)
+                         - vim.opt.cmdheight:get()
+        return {
+          border = 'rounded',
+          relative = 'editor',
+          row = center_y,
+          col = center_x,
+          width = window_w_int,
+          height = window_h_int,
+        }
+        end,
+    },
+    width = function()
+      return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+    end,
   },
   renderer = {
-    add_trailing = false,
-    group_empty = false,
-    highlight_git = false,
-    highlight_opened_files = "none",
     root_folder_modifier = ":~",
-    indent_markers = {
-      enable = false,
-      icons = {
-        corner = "└ ",
-        edge = "│ ",
-        none = "  ",
-      },
-    },
     icons = {
-      webdev_colors = true,
-      git_placement = "before",
-      padding = " ",
-      symlink_arrow = " ➛ ",
-      show = {
-        file = true,
-        folder = true,
-        folder_arrow = true,
-        git = true,
-      },
       glyphs = {
         default = "",
         symlink = "",
@@ -173,18 +167,8 @@ nvim_tree.setup {
     },
     special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
   },
-  hijack_directories = {
-    enable = true,
-    auto_open = true,
-  },
   update_focused_file = {
-    enable = true,
-    update_cwd = false,
-    ignore_list = {},
-  },
-  system_open = {
-    cmd = "",
-    args = {},
+    enable = true
   },
   diagnostics = {
     enable = false,
@@ -201,21 +185,7 @@ nvim_tree.setup {
     custom = {},
     exclude = {},
   },
-  git = {
-    enable = true,
-    ignore = false,
-    timeout = 400,
-  },
   actions = {
-    use_system_clipboard = true,
-    change_dir = {
-      enable = true,
-      global = false,
-      restrict_above_cwd = false,
-    },
-    expand_all = {
-      max_folder_discovery = 300,
-    },
     open_file = {
       quit_on_open = false,
       resize_window = true,
