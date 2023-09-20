@@ -20,6 +20,6 @@ null_ls.setup {
     diagnostics.stylint,
 
     -- Elixir
-    diagnostics.credo,
+    --[[ diagnostics.credo, ]]
   }
 }
