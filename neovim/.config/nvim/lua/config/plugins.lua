@@ -142,12 +142,6 @@ return packer.startup(function(use)
 
 	-- Hook into activitywatch.
 	--[[ use("ActivityWatch/aw-watcher-vim") ]]
-	use({
-		"nvim-neorg/neorg",
-		tag = "v3.1.0",
-		run = ":Neorg sync-parsers",
-		config = require("config.neorg").setup,
-	})
 
 	-- Automatically set up your configuratin after cloning packer.nvim
 	-- Put this at the end after all plugins
