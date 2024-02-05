@@ -7,6 +7,9 @@ bind index G last-entry
 bind pager,browser gg top-page
 bind pager,browser G bottom-page
 
+# mail bindings
+bind pager <Esc>U list-unsubscribe 
+
 # sidebar mappings
 bind index,pager \Ck sidebar-prev
 bind index,pager \Cj sidebar-next

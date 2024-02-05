@@ -7,6 +7,7 @@ end
 
 indent_blankline.setup {
   scope = {
-    show_start = false
+    show_start = false,
+    show_end = false
   }
 }

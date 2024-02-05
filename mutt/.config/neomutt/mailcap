@@ -1,9 +1,12 @@
 # HTML
 text/html; elinks -dump -dump-color-mode 1; copiousoutput;
 
+# Calendar Invites
+application/ics; /usr/bin/gio open %s
+
 # PDFs
-application/pdf; /usr/bin/open %s
+application/pdf; /usr/bin/gio open %s
 
 # Images
-image/png; /usr/bin/open %s
-image/jpeg; /usr/bin/open %s
+image/png; /usr/bin/gio open %s
+image/jpeg; /usr/bin/gio open %s

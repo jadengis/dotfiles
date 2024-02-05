@@ -9,5 +9,6 @@
   tool = nvimdiff3
 [commit]
 	gpgsign = true
+	verbose = true
 [tag]
 	gpgsign = true
