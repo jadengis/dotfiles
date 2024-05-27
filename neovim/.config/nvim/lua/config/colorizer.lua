@@ -1,12 +1,14 @@
-local status_ok, colorizer = pcall(require, "colorizer")
-if not status_ok then
-  return
-end
+local M = {
+  "norcalli/nvim-colorizer.lua",
+  config = function()
+    require("colorizer").setup({
+      "css",
+      "scss",
+      "javascript",
+      "typescript",
+      "html",
+    }, { rgb_fn = true })
+  end,
+}
 
-colorizer.setup({
-  "css",
-  "scss",
-  "javascript",
-  "typescript",
-  "html",
-}, { rgb_fn = true })
+return M

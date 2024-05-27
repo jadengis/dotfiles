@@ -1,12 +1,15 @@
-local status_ok, notify = pcall(require, "notify")
-if not status_ok then
-  return
-end
-
-notify.setup {
-  stages = "fade",
-  timeout = 4000,
-  top_down = false,
+local M = {
+  "rcarriga/nvim-notify",
 }
 
-vim.notify = notify
+function M.config()
+  local notify = require("notify")
+  notify.setup {
+    stages = "fade",
+    timeout = 4000,
+    top_down = false,
+  }
+  vim.notify = notify
+end
+
+return M

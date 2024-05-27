@@ -1,28 +1,47 @@
-local status_ok, configs = pcall(require, "nvim-treesitter.configs")
-if not status_ok then
-  return
+--[[ local M = { ]]
+--[[   "nvim-treesitter/nvim-treesitter", ]]
+--[[   dependencies = { "nvim-treesitter/playground" }, ]]
+--[[   event = { "BufReadPost", "BufNewFile" }, ]]
+--[[   build = ":TSUpdate", ]]
+--[[ } ]]
+--[[]]
+--[[ function M.config() ]]
+--[[   require("nvim-treesitter.configs").setup { ]]
+--[[     ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers) or a list of languages ]]
+--[[     sync_install = false, -- install languages synchronously (only applied to `ensure_installed`) ]]
+--[[     ignore_install = { "phpdoc" }, -- List of parsers to ignore installing ]]
+--[[     autopairs = { ]]
+--[[       enable = true, ]]
+--[[     }, ]]
+--[[     autotag = { ]]
+--[[       enable = true, ]]
+--[[     }, ]]
+--[[     highlight = { ]]
+--[[       enable = true, -- false will disable to whole extension ]]
+--[[       disable = { "yaml" }, -- list of languages that will be disabled ]]
+--[[       additional_vim_regex_highlighting = false, ]]
+--[[     }, ]]
+--[[     indent = { enable = true, disable = { "yaml" } }, ]]
+--[[     playground = { ]]
+--[[       enable = true, ]]
+--[[     } ]]
+--[[   } ]]
+--[[ end ]]
+--[[]]
+--[[ return M ]]
+
+local M = {
+  "nvim-treesitter/nvim-treesitter",
+  event = { "BufReadPost", "BufNewFile" },
+  build = ":TSUpdate",
+}
+
+function M.config()
+  require("nvim-treesitter.configs").setup {
+    ensure_installed = { "lua", "markdown", "markdown_inline", "bash", "python" },
+    highlight = { enable = true },
+    indent = { enable = true },
+  }
 end
 
-configs.setup {
-  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers) or a list of languages
-  sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
-  ignore_install = { "phpdoc" }, -- List of parsers to ignore installing
-  autopairs = {
-    enable = true,
-  },
-  autotag = {
-    enable = true,
-  },
-  highlight = {
-    enable = true, -- false will disable to whole extension
-    disable = { "yaml" }, -- list of languages that will be disabled
-    additional_vim_regex_highlighting = false,
-  },
-  indent = { enable = true, disable = { "yaml" } },
-  context_commentstring = {
-    enable = true,
-  },
-  playground = {
-    enable = true,
-  }
-}
+return M
