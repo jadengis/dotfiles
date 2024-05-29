@@ -47,7 +47,7 @@ local spec = {
   require "config.bufferline",
   require "config.lualine",
   require "config.indent_blankline",
-  --[[ require "config.sessions", ]]
+  require "config.sessions",
   require "config.colorizer",
   require "config.notify",
 }

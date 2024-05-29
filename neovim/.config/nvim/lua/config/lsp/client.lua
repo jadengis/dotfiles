@@ -68,7 +68,7 @@ M.setup = function(config)
 		lsp_breadcrumbs(client, bufnr)
 
 		-- Ignore semantic tokens for now due to bad highlights in the current colorscheme.
-		client.server_capabilities.semanticTokensProvider = nil
+		--[[ client.server_capabilities.semanticTokensProvider = nil ]]
 	end
 
 	local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")

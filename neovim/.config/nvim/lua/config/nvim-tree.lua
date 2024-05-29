@@ -1,5 +1,6 @@
 local M = {
   "nvim-tree/nvim-tree.lua",
+  event = "VeryLazy",
   dependencies = { "nvim-tree/nvim-web-devicons" },
 }
 
@@ -111,6 +112,7 @@ function M.config()
     sort_by = "name",
     update_cwd = false,
     view = {
+      signcolumn = "no",
       float = {
         enable = true,
         open_win_config = function()
@@ -167,7 +169,8 @@ function M.config()
       special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
     },
     update_focused_file = {
-      enable = true
+      enable = true,
+      debounce_delay = 15,
     },
     diagnostics = {
       enable = false,
