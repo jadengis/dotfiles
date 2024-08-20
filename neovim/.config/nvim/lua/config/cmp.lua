@@ -134,19 +134,25 @@ function M.config()
         mode = "symbol_text",
         menu = {
           copilot = "[copilot]",
+          codeium = "[codeium]",
           nvim_lsp = "[lsp]",
           nvim_lua = "[api]",
           path = "[path]",
           luasnip = "[snip]",
           buffer = "[buf]",
           npm = "[npm]",
+          vim_dadbod_completion = "[db]",
         },
-        symbol_map = { Copilot = "" },
+        symbol_map = {
+          Copilot = "",
+          Codeium = "",
+        },
       }),
     },
     sources = {
       { name = "npm", group_index = 1, keyword_length = 4 },
-      { name = "copilot", group_index = 2 },
+      --[[ { name = "copilot", group_index = 2 }, ]]
+      { name = "codeium", group_index = 2 },
       { name = "nvim_lsp", group_index = 2 },
       { name = "neorg", group_index = 2 },
       { name = "path", group_index = 2 },
@@ -184,6 +190,13 @@ function M.config()
       ghost_text = false,
       native_menu = false,
     },
+  })
+
+  cmp.setup.filetype({"sql"}, {
+    sources = {
+      { name = "vim-dadbod-completion" },
+      { name = "buffer" },
+    }
   })
 end
 

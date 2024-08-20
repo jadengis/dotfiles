@@ -36,6 +36,7 @@ local spec = {
 			require("copilot_cmp").setup({})
 		end,
 	},
+  require "config.codeium",
   require "config.lsp",
   require "config.dap",
   require "config.telescope",
@@ -50,6 +51,7 @@ local spec = {
   require "config.sessions",
   require "config.colorizer",
   require "config.notify",
+  require "config.dadbod",
 }
 
 require("lazy").setup {

@@ -6,7 +6,6 @@ end
 local lspconfig = require("lspconfig")
 
 local servers = {
-  "angularls",
   "tsserver",
   "jsonls",
   "html",
@@ -15,9 +14,8 @@ local servers = {
   "erlangls",
   "elixirls",
   "lua_ls",
-  "vale_ls",
-  "pylyzer",
   "texlab",
+  "sqlls",
 }
 
 lsp_installer.setup({
