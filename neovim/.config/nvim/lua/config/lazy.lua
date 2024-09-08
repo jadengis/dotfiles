@@ -41,6 +41,7 @@ local spec = {
   require "config.dap",
   require "config.telescope",
   require "config.treesitter",
+  require "config.dressing",
   require "config.autopairs",
   require "config.comment",
   require "config.gitsigns",
@@ -52,6 +53,7 @@ local spec = {
   require "config.colorizer",
   require "config.notify",
   require "config.dadbod",
+  require "config.avante"
 }
 
 require("lazy").setup {
