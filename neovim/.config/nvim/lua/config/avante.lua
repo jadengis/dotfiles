@@ -34,9 +34,9 @@ local M = {
       -- Make sure to setup it properly if you have lazy=true
       'MeanderingProgrammer/render-markdown.nvim',
       opts = {
-        file_types = { "markdown", "Avante" },
+        file_types = { "markdown", "markdoc", "Avante" },
       },
-      ft = { "markdown", "Avante" },
+      ft = { "markdown", "markdoc", "Avante" },
     },
   },
 }
