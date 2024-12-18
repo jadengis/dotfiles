@@ -85,6 +85,10 @@ function M.config()
         luasnip.lsp_expand(args.body) -- For `luasnip` users.
       end,
     },
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
     mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),
       ["<C-j>"] = cmp.mapping.select_next_item(),
@@ -102,32 +106,32 @@ function M.config()
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
       }),
-      ["<Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        elseif luasnip.expand_or_jumpable() then
-          luasnip.expand_or_jump()
-        elseif check_backspace() then
-          fallback()
-        else
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-      }),
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
-        else
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-      }),
+      --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
+      --[[   if cmp.visible() then ]]
+      --[[     cmp.select_next_item() ]]
+      --[[   elseif luasnip.expand_or_jumpable() then ]]
+      --[[     luasnip.expand_or_jump() ]]
+      --[[   elseif check_backspace() then ]]
+      --[[     fallback() ]]
+      --[[   else ]]
+      --[[     fallback() ]]
+      --[[   end ]]
+      --[[ end, { ]]
+      --[[   "i", ]]
+      --[[   "s", ]]
+      --[[ }), ]]
+      --[[ ["<S-Tab>"] = cmp.mapping(function(fallback) ]]
+      --[[   if cmp.visible() then ]]
+      --[[     cmp.select_prev_item() ]]
+      --[[   elseif luasnip.jumpable(-1) then ]]
+      --[[     luasnip.jump(-1) ]]
+      --[[   else ]]
+      --[[     fallback() ]]
+      --[[   end ]]
+      --[[ end, { ]]
+      --[[   "i", ]]
+      --[[   "s", ]]
+      --[[ }), ]]
     },
     formatting = {
       format = lspkind.cmp_format({
@@ -180,11 +184,6 @@ function M.config()
     confirm_opts = {
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
-    },
-    window = {
-      documentation = {
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-      },
     },
     experimental = {
       ghost_text = false,

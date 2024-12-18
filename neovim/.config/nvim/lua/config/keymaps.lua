@@ -1,7 +1,5 @@
 local opts = { noremap = true, silent = true }
 
-local term_opts = { silent = true }
-
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
@@ -80,48 +78,16 @@ keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
--- Terminal --
--- Better terminal navigation
-keymap("t", "<C-h>", "<C-\\><C-N><C-w>h", term_opts)
-keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
-keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
-keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
-
 -- Quick Fix
 keymap("n", "<leader>co", "<cmd>copen<cr>", opts) -- Open quick fix
 keymap("n", "<leader>cc", "<cmd>cclose<cr>", opts) -- Close quick fix
 
 -- Only load the following keymaps if not in vscode.
 if not vim.g.vscode then
-  -- Telescope keymaps
-  keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", opts) -- Find Files
-  keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", opts) -- Find Grep
-  keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts) -- Find Buffers
-  keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", opts) -- Find Buffers
-  keymap("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", opts) -- Find Recent
-  keymap("n", "<leader>ft", "<cmd>Telescope treesitter<cr>", opts) -- Find Treesitter symbols
-
-  keymap("n", "<leader>gr", "<cmd>Telescope lsp_references<cr>", opts) -- Find LSP references
-  keymap("n", "<leader>gs", "<cmd>Telescope git_status<cr>", opts)
-  keymap("n", "<leader>gc", "<cmd>Telescope git_commits<cr>", opts)
-
   -- Formatting
   keymap("n", "<leader>tf", "<cmd>Format<cr>", opts) -- Tools Format
 
   -- Buffers
   keymap("n", "<S-q>", "<cmd>Bdelete!<cr>", opts) -- Close buffer without close window
   keymap("n", "<A-Q>", "<cmd>qa<cr>", opts) -- Close buffer without close window
-
-  -- DAP
-  keymap("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>", opts)
-  keymap("n", "<leader>dc", "<cmd>DapContinue<cr>", opts)
-  keymap("n", "<leader>di", "<cmd>DapStepInto<cr>", opts)
-  keymap("n", "<leader>do", "<cmd>DapStepOver<cr>", opts)
-  keymap("n", "<leader>dO", "<cmd>DapStepOut<cr>", opts)
-  keymap("n", "<leader>dr", "<cmd>DapToggleRepl<cr>", opts)
-  keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
-  keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
-  keymap("n", "<leader>dt", "<cmd>DapTerminate<cr>", opts)
-  keymap("n", "<leader>?", "<cmd>lua require'dapui'.eval(nil, { enter = true })<cr>", opts)
-  keymap("v", "<leader>?", "<cmd>lua require'dapui'.eval(nil, { enter = true })<cr>", opts)
 end

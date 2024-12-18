@@ -8,6 +8,17 @@ local M = {
     },
     "nvim-telescope/telescope-media-files.nvim"
   },
+  keys = {
+    { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files"},
+    { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep"},
+    { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find Buffers"},
+    { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Find Help"},
+    { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Find Recent"},
+    { "<leader>ft", "<cmd>Telescope treesitter<cr>", desc = "Find Treesitter symbols"},
+    { "<leader>gr", "<cmd>Telescope lsp_references<cr>", desc = "Find LSP reference"},
+    { "<leader>gs", "<cmd>Telescope git_status<cr>", desc = "Git status"},
+    { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Git commits"},
+  }
 }
 
 function M.config()
@@ -20,7 +31,6 @@ function M.config()
       prompt_prefix = " ",
       selection_caret = " ",
       path_display = { "smart" },
-
       mappings = {
         i = {
           ["<C-n>"] = actions.cycle_history_next,
@@ -94,6 +104,16 @@ function M.config()
       -- }
       -- Now the picker_config_key will be applied every time you call this
       -- builtin picker
+      live_grep = {
+        file_ignore_patterns = { '.git', 'node_modules',  ".DS_Store", '.venv' },
+        additional_args = function(_)
+            return { "--hidden" }
+        end
+      },
+      find_files = {
+        file_ignore_patterns = { '.git', 'node_modules',  ".DS_Store", '.venv' },
+        hidden = true
+      },
       buffers = {
         mappings = {
           i = {

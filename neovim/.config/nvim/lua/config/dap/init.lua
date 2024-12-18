@@ -4,6 +4,18 @@ local M = {
     "rcarriga/nvim-dap-ui",
     "nvim-neotest/nvim-nio"
   },
+  keys = {
+     { "<leader>db", "<cmd>DapToggleBreakpoint<cr>", desc = "Toggle Breakpoint" },
+     { "<leader>dc", "<cmd>DapContinue<cr>", desc = "Continue" },
+     { "<leader>di", "<cmd>DapStepInto<cr>", desc = "Step Into" },
+     { "<leader>do", "<cmd>DapStepOver<cr>", desc = "Step Over" },
+     { "<leader>dO", "<cmd>DapStepOut<cr>", desc = "Step Out" },
+     { "<leader>dr", "<cmd>DapToggleRepl<cr>", desc = "Toggle REPL" },
+     { "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", desc = "Run Last" },
+     { "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", desc = "Toggle UI" },
+     { "<leader>dt", "<cmd>DapTerminate<cr>", desc = "Terminate" },
+     { "<leader>?", "<cmd>lua require'dapui'.eval(nil, { enter = true })<cr>", desc = "Evaluate", mode = { "n", "v" } },
+  }
 }
 
 function M.config()
