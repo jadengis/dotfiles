@@ -104,7 +104,7 @@ function M.config()
       -- Set `select` to `false` to only confirm explicitly selected items.
       ["<CR>"] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
-        select = false,
+        select = true,
       }),
       --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
       --[[   if cmp.visible() then ]]
