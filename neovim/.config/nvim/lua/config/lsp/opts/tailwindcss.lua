@@ -6,8 +6,9 @@ local opts = {
       heex = "html"
     }
   },
-  root_dir = function (fname)
-    return util.root_pattern('tailwind.config.js', 'assets/tailwind.config.js', 'tailwind.config.ts')(fname)
+  root_dir = function(fname)
+    return util.root_pattern('tailwind.config.js', 'assets/tailwind.config.js', 'tailwind.config.ts',
+      'assets/tailwind.config.ts', 'package.json')(fname)
   end
 }
 return opts

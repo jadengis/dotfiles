@@ -12,23 +12,15 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local spec = {
-  {"nvim-lua/popup.nvim", lazy = false},
-  {"nvim-lua/plenary.nvim", lazy = false},
-  {"moll/vim-bbye", lazy = false},
+  { "nvim-lua/popup.nvim",   lazy = false },
+  { "nvim-lua/plenary.nvim", lazy = false },
+  { "moll/vim-bbye",         lazy = false },
   require "config.colorscheme",
   require "config.illuminate",
   require "config.cmp",
   require "config.luasnip",
   require "config.breadcrumbs",
-  {
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "VimEnter",
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-    }
-	},
+  require "config.copilot",
   --[[ require "config.codeium", ]]
   require "config.lsp",
   require "config.dap",

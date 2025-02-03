@@ -6,7 +6,7 @@ local M = {
     provider = "claude",
     auto_suggestions_provider = "copilot",
     behaviour = {
-      auto_suggestions = true,
+      auto_suggestions = false,
     },
     mappings = {
       suggestion = {
