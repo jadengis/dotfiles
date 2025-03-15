@@ -21,23 +21,11 @@ vim.g.maplocalleader = " "
 keymap("n", "j", "gj", opts)
 keymap("n", "k", "gk", opts)
 
--- Better window navigation
-keymap("n", "<C-h>", "<C-w>h", opts)
-keymap("n", "<C-j>", "<C-w>j", opts)
-keymap("n", "<C-k>", "<C-w>k", opts)
-keymap("n", "<C-l>", "<C-w>l", opts)
-
 -- Search
 keymap("n", "<leader><Space>", ":nohl<cr>", opts)
 
 -- Tree View
 keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
-
--- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
@@ -84,10 +72,34 @@ keymap("n", "<leader>cc", "<cmd>cclose<cr>", opts) -- Close quick fix
 
 -- Only load the following keymaps if not in vscode.
 if not vim.g.vscode then
+  -- Better window navigation
+  keymap("n", "<C-h>", "<C-w>h", opts)
+  keymap("n", "<C-j>", "<C-w>j", opts)
+  keymap("n", "<C-k>", "<C-w>k", opts)
+  keymap("n", "<C-l>", "<C-w>l", opts)
+
+  -- Resize with arrows
+  keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+  keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+  keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+  keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+
   -- Formatting
   keymap("n", "<leader>tf", "<cmd>Format<cr>", opts) -- Tools Format
 
   -- Buffers
   keymap("n", "<S-q>", "<cmd>Bdelete!<cr>", opts) -- Close buffer without close window
   keymap("n", "<A-Q>", "<cmd>qa<cr>", opts) -- Close buffer without close window
+else
+-- Better window navigation
+  keymap("n", "<C-A-h>", "<C-w>h", opts)
+  keymap("n", "<C-A-j>", "<C-w>j", opts)
+  keymap("n", "<C-A-k>", "<C-w>k", opts)
+  keymap("n", "<C-A-l>", "<C-w>l", opts)
+
+  -- Resize with arrows
+  keymap("n", "<C-A-Up>", ":resize -2<CR>", opts)
+  keymap("n", "<C-A-Down>", ":resize +2<CR>", opts)
+  keymap("n", "<C-A-Left>", ":vertical resize -2<CR>", opts)
+  keymap("n", "<C-A-Right>", ":vertical resize +2<CR>", opts)
 end
