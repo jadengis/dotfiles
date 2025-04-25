@@ -5,7 +5,6 @@ end
 
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
-local code_actions = null_ls.builtins.code_actions
 
 null_ls.setup {
   debug = false,
@@ -15,8 +14,8 @@ null_ls.setup {
 
     -- JavaScript / WebDev
     formatting.prettier,
-    code_actions.eslint,
-    diagnostics.eslint,
+    require("none-ls.code_actions.eslint"),
+    require("none-ls.diagnostics.eslint"),
     diagnostics.stylint,
 
     -- Elixir

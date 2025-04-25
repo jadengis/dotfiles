@@ -2,9 +2,10 @@ local M = {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "williamboman/mason.nvim", -- Package manager for Neovim
-	  "williamboman/mason-lspconfig.nvim", -- LspConfig for mason.nvim
-	  "nvimtools/none-ls.nvim",
+    "williamboman/mason.nvim",          -- Package manager for Neovim
+    "williamboman/mason-lspconfig.nvim", -- LspConfig for mason.nvim
+    "nvimtools/none-ls.nvim",
+    "nvimtools/none-ls-extras.nvim",
     "folke/neodev.nvim",
     "utilyre/barbecue.nvim",
   }
