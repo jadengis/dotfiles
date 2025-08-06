@@ -11,7 +11,7 @@ local servers = {
   "html",
   "cssls",
   "tailwindcss",
-  "erlangls",
+  --[[ "erlangls", ]]
   "elixirls",
   "lua_ls",
   "texlab",
