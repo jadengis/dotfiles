@@ -16,7 +16,6 @@ local spec = {
   { "nvim-lua/plenary.nvim", lazy = false },
   { "moll/vim-bbye",         lazy = false },
   require "config.colorscheme",
-  require "config.illuminate",
   require "config.cmp",
   require "config.luasnip",
   require "config.breadcrumbs",
@@ -38,7 +37,6 @@ local spec = {
   require "config.notify",
   require "config.dadbod",
   require "config.claudecode"
-  --[[ require "config.avante" ]]
 }
 
 require("lazy").setup {
