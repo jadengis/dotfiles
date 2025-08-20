@@ -1,15 +1,14 @@
 local M = {
   "nvim-treesitter/nvim-treesitter",
-  --[[ dependencies = { "nvim-treesitter/playground" }, ]]
   lazy = false,
   branch = "main",
   build = ":TSUpdate",
   init = function()
     local parser_installed = {
       "javascript",
-      "jsx",
+      "javascriptreact",
       "typescript",
-      "tsx",
+      "typescriptreact",
       "html",
       "css",
       "elixir",
