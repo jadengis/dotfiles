@@ -3,25 +3,25 @@ if not status_ok then
   return
 end
 
-local lspconfig = require("lspconfig")
-
-local servers = {
-  "tsserver",
+local mason_managed_servers = {
+  "ts_ls",
   "jsonls",
   "html",
   "cssls",
   "tailwindcss",
-  --[[ "erlangls", ]]
   "elixirls",
   "lua_ls",
   "texlab",
   "sqlls",
 }
-
 lsp_installer.setup({
-  ensure_installed = servers,
+  automatic_enable = false,
+  ensure_installed = mason_managed_servers,
 })
 
+local servers = vim.list_extend({
+  --[[ "expert" ]]
+}, mason_managed_servers)
 for _, server in pairs(servers) do
   -- Apply custom settings for all required LSPs
   local opts = {}
@@ -34,5 +34,7 @@ for _, server in pairs(servers) do
     on_attach = client.on_attach,
     capabilities = client.capabilities,
   })
-  lspconfig[server].setup(opts)
+
+  vim.lsp.config(server, opts)
+  vim.lsp.enable(server)
 end

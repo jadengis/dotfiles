@@ -1,12 +1,9 @@
-local opts = {}
-local install_path = vim.fn.stdpath("data") .. "/elixir-ls/language_server.sh"
+local install_path = vim.fn.stdpath("data") .. "/mason/bin/elixir-ls"
 
-if vim.fn.empty(vim.fn.glob(install_path)) == 0 then
-	opts = {
-		cmd = { install_path },
-		breadcrumbs = {
-			filetypes = { "elixir" },
-		},
-	}
-end
+local opts = {
+  cmd = { install_path },
+  breadcrumbs = {
+    filetypes = { "elixir" },
+  },
+}
 return opts
