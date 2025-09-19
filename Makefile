@@ -7,6 +7,7 @@ clean: $(CLEAN_PACKAGES)
 
 $(ALL_PACKAGES):
 	stow --no-folding --target=${HOME} $@
+	-include ./${@}/Makefile
 
 $(CLEAN_PACKAGES):
 	stow --target=${HOME} --delete $(@:clean_%=%)
