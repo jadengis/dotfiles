@@ -1,3 +1,8 @@
+include ../common.mk
+
+PACKAGES := git:git curl:curl
+ASDF_PLUGINS := nodejs erlang elixir
+
 .PHONY: all install check-deps install-asdf install-plugins install-versions
 
 all: check-deps install-plugins install-versions
@@ -7,19 +12,7 @@ install: check-deps install-plugins install-versions
 	@echo "Installing ASDF and language versions..."
 
 check-deps: install-asdf
-	@echo "Checking ASDF dependencies..."
-	@if ! command -v git >/dev/null 2>&1; then \
-		echo "Git not found. Installing via dnf..."; \
-		sudo dnf install -y git; \
-	else \
-		echo "Git already installed"; \
-	fi
-	@if ! command -v curl >/dev/null 2>&1; then \
-		echo "Curl not found. Installing via dnf..."; \
-		sudo dnf install -y curl; \
-	else \
-		echo "Curl already installed"; \
-	fi
+	$(call check_and_install_packages,$(PACKAGES))
 
 install-asdf:
 	@echo "Checking ASDF installation..."
@@ -29,20 +22,14 @@ install-asdf:
 	else \
 		echo "ASDF already installed"; \
 	fi
-	@if ! grep -q 'source.*asdf' ${HOME}/.bashrc 2>/dev/null; then \
-		echo "Adding ASDF to .bashrc..."; \
-		echo '' >> ${HOME}/.bashrc; \
-		echo '. "$${HOME}/.asdf/asdf.sh"' >> ${HOME}/.bashrc; \
-		echo '. "$${HOME}/.asdf/completions/asdf.bash"' >> ${HOME}/.bashrc; \
-	else \
-		echo "ASDF already configured in .bashrc"; \
-	fi
+	$(call add_to_file_if_missing,${HOME}/.bashrc,. "$${HOME}/.asdf/asdf.sh",ASDF sourcing)
+	$(call add_to_file_if_missing,${HOME}/.bashrc,. "$${HOME}/.asdf/completions/asdf.bash",ASDF completions)
 
 install-plugins:
 	@echo "Installing ASDF plugins..."
 	@export PATH="${HOME}/.asdf/bin:${PATH}" && \
 	. "${HOME}/.asdf/asdf.sh" && \
-	for plugin in nodejs erlang elixir; do \
+	for plugin in $(ASDF_PLUGINS); do \
 		if ! asdf plugin list | grep -q "^$$plugin$$"; then \
 			echo "Installing $$plugin plugin..."; \
 			asdf plugin add $$plugin; \

@@ -1,3 +1,7 @@
+include ../common.mk
+
+PACKAGES := git:git gnupg2:gnupg2
+
 .PHONY: all install check-deps
 
 all: check-deps
@@ -7,16 +11,4 @@ install: check-deps
 	@echo "Installing git dependencies..."
 
 check-deps:
-	@echo "Checking git dependencies..."
-	@if ! command -v git >/dev/null 2>&1; then \
-		echo "Git not found. Installing via dnf..."; \
-		sudo dnf install -y git; \
-	else \
-		echo "Git already installed"; \
-	fi
-	@if ! command -v gnupg2 >/dev/null 2>&1; then \
-		echo "GnuPG not found. Installing via dnf (needed for GPG signing)..."; \
-		sudo dnf install -y gnupg2; \
-	else \
-		echo "GnuPG already installed"; \
-	fi
+	$(call check_and_install_packages,$(PACKAGES))
