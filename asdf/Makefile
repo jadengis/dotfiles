@@ -18,7 +18,7 @@ install-asdf:
 	@echo "Checking ASDF installation..."
 	@if [ ! -d "${HOME}/.asdf" ]; then \
 		echo "ASDF not found. Installing..."; \
-		git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.14.0; \
+		git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.18.0; \
 	else \
 		echo "ASDF already installed"; \
 	fi

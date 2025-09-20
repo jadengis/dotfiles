@@ -48,3 +48,24 @@ define add_to_file_if_missing
 		echo "$(3) already configured in $(1)"; \
 	fi
 endef
+
+# Function to enable and start systemd user services/timers
+define enable_systemd_user_units
+	@echo "Enabling systemd user units..."
+	@for unit in $(1); do \
+		if systemctl --user is-enabled $$unit >/dev/null 2>&1; then \
+			echo "$$unit already enabled"; \
+		else \
+			echo "Enabling $$unit..."; \
+			systemctl --user enable $$unit; \
+		fi; \
+		if systemctl --user is-active $$unit >/dev/null 2>&1; then \
+			echo "$$unit already active"; \
+		else \
+			echo "Starting $$unit..."; \
+			systemctl --user start $$unit; \
+		fi; \
+	done
+	@echo "Reloading systemd user daemon..."
+	@systemctl --user daemon-reload
+endef
