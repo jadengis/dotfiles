@@ -1,0 +1,30 @@
+[general]
+targets = github
+
+log.level = INFO
+log.file = /tmp/bugwarrior.log
+
+shorten = False
+inline_links = True
+annotation_links = False
+
+# Configure GitHub service
+[github]
+service = github
+github.username = jadengis
+
+github.project_template = {{githubrepo}}
+github.description_template = [{{githubrepo}}] {{githubnumber}}: {{githubtitle}}
+
+# Required scopes: repo (for private repos) or public_repo (for public only)
+github.token = @oracle:eval:pass GitHub/jadengis/Token
+
+github.query = assignee:jadengis state:open
+
+# github.include_repos = 
+# github.exclude_repos = some-repo,another-repo
+github.exclude_pull_requests = True
+
+github.import_labels_as_tags = True
+github.add_tags = github
+

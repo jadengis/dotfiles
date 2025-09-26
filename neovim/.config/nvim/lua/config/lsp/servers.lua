@@ -10,6 +10,7 @@ local mason_managed_servers = {
   "cssls",
   "tailwindcss",
   "elixirls",
+  --[[ "expert", ]]
   "lua_ls",
   "texlab",
   "sqlls",
