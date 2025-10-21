@@ -43,12 +43,6 @@ function M.config()
   lspkind.init()
   require("cmp-npm").setup({})
   require("luasnip/loaders/from_vscode").lazy_load()
-
-  local check_backspace = function()
-    local col = vim.fn.col(".") - 1
-    return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-  end
-
   --   פּ ﯟ   some other good icons
   -- local kind_icons = {
   --   Text = "",
@@ -106,32 +100,6 @@ function M.config()
         behavior = cmp.ConfirmBehavior.Replace,
         select = true,
       }),
-      --[[ ["<Tab>"] = cmp.mapping(function(fallback) ]]
-      --[[   if cmp.visible() then ]]
-      --[[     cmp.select_next_item() ]]
-      --[[   elseif luasnip.expand_or_jumpable() then ]]
-      --[[     luasnip.expand_or_jump() ]]
-      --[[   elseif check_backspace() then ]]
-      --[[     fallback() ]]
-      --[[   else ]]
-      --[[     fallback() ]]
-      --[[   end ]]
-      --[[ end, { ]]
-      --[[   "i", ]]
-      --[[   "s", ]]
-      --[[ }), ]]
-      --[[ ["<S-Tab>"] = cmp.mapping(function(fallback) ]]
-      --[[   if cmp.visible() then ]]
-      --[[     cmp.select_prev_item() ]]
-      --[[   elseif luasnip.jumpable(-1) then ]]
-      --[[     luasnip.jump(-1) ]]
-      --[[   else ]]
-      --[[     fallback() ]]
-      --[[   end ]]
-      --[[ end, { ]]
-      --[[   "i", ]]
-      --[[   "s", ]]
-      --[[ }), ]]
     },
     formatting = {
       format = lspkind.cmp_format({

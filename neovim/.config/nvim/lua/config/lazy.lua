@@ -20,6 +20,7 @@ local spec = {
   require "config.luasnip",
   require "config.breadcrumbs",
   require "config.copilot",
+  require "config.sidekick",
   require "config.lsp",
   require "config.dap",
   require "config.telescope",
@@ -36,7 +37,7 @@ local spec = {
   require "config.colorizer",
   require "config.notify",
   require "config.dadbod",
-  require "config.claudecode"
+  --[[ require "config.claudecode" ]]
 }
 
 require("lazy").setup {

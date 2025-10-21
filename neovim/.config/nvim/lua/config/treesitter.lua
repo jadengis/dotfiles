@@ -9,10 +9,13 @@ local M = {
       "javascriptreact",
       "typescript",
       "typescriptreact",
+      "tsx",
       "html",
       "css",
       "elixir",
+      "eex",
       "heex",
+      "erlang",
       "go",
       "c",
       "lua",
@@ -21,6 +24,14 @@ local M = {
       "query",
       "markdown_inline",
       "markdown",
+      "bash",
+      "json",
+      "yaml",
+      "xml",
+      "toml",
+      "dosbatch",
+      "sql",
+      "dockerfile",
     }
 
     require("nvim-treesitter").install(parser_installed)

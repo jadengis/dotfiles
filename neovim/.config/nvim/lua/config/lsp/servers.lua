@@ -14,6 +14,7 @@ local mason_managed_servers = {
   "lua_ls",
   "texlab",
   "sqlls",
+  --[[ "copilot", ]]
 }
 lsp_installer.setup({
   automatic_enable = false,
