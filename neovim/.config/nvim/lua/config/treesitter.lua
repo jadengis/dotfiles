@@ -26,12 +26,18 @@ local M = {
       "markdown",
       "bash",
       "json",
+      "jsonc",
       "yaml",
       "xml",
       "toml",
       "dosbatch",
       "sql",
+      "csv",
+      "python",
       "dockerfile",
+      "dosbatch",
+      "requirements",
+      "gitignore"
     }
 
     require("nvim-treesitter").install(parser_installed)
