@@ -1,4 +1,4 @@
-ALL_PACKAGES := asdf git mutt neovim taskwarrior
+ALL_PACKAGES := asdf cursor-agent git mutt neovim taskwarrior
 CLEAN_PACKAGES := $(ALL_PACKAGES:%=clean_%)
 INSTALL_PACKAGES := $(ALL_PACKAGES:%=install_%)
 

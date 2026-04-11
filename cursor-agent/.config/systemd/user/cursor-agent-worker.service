@@ -1,0 +1,14 @@
+[Unit]
+Description=Cursor Cloud Agent remote worker
+Documentation=https://cursor.com/docs
+
+[Service]
+Type=simple
+Environment=PATH=%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=-%h/.config/cursor-agent/worker.env
+ExecStart=/bin/sh -c 'exec agent worker start $CURSOR_WORKER_OPTS'
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target

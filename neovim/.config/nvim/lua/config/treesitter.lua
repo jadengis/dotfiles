@@ -37,7 +37,10 @@ local M = {
       "dockerfile",
       "dosbatch",
       "requirements",
-      "gitignore"
+      "gitignore",
+      "jinja",
+      "embedded_template",
+      "ini"
     }
 
     require("nvim-treesitter").install(parser_installed)
