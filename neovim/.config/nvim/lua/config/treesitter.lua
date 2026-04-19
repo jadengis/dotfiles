@@ -6,9 +6,7 @@ local M = {
   init = function()
     local parser_installed = {
       "javascript",
-      "javascriptreact",
       "typescript",
-      "typescriptreact",
       "tsx",
       "html",
       "css",
@@ -26,7 +24,6 @@ local M = {
       "markdown",
       "bash",
       "json",
-      "jsonc",
       "yaml",
       "xml",
       "toml",
@@ -35,7 +32,6 @@ local M = {
       "csv",
       "python",
       "dockerfile",
-      "dosbatch",
       "requirements",
       "gitignore",
       "jinja",
