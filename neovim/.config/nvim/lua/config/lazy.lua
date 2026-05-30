@@ -27,7 +27,6 @@ local spec = {
   require "config.treesitter",
   require "config.dressing",
   require "config.autopairs",
-  require "config.comment",
   require "config.gitsigns",
   require "config.nvim-tree",
   require "config.bufferline",
