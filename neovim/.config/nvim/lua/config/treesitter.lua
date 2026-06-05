@@ -41,10 +41,17 @@ local M = {
 
     require("nvim-treesitter").install(parser_installed)
 
+    -- use the markdown parser for mdx files (no dedicated mdx parser exists)
+    vim.treesitter.language.register("markdown", "mdx")
+
+    -- filetypes that should auto-start treesitter but have no parser of their
+    -- own name (e.g. mdx -> markdown), so they must not be passed to install()
+    local highlight_filetypes = vim.list_extend(vim.deepcopy(parser_installed), { "mdx" })
+
     -- auto-start highlights & indentation
     vim.api.nvim_create_autocmd("FileType", {
       desc = "User: enable treesitter highlighting",
-      pattern = parser_installed,
+      pattern = highlight_filetypes,
       callback = function(ctx)
         -- highlights
         local ok = pcall(vim.treesitter.start)             -- errors for filetypes with no parser

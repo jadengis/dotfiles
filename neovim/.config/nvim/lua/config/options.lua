@@ -54,6 +54,7 @@ vim.cmd [[set clipboard+=unnamedplus]]
 vim.filetype.add({
   extension = {
     mdoc = "markdoc",
+    mdx = "mdx",
   }
 })
 
