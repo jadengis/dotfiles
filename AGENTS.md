@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents (Claude Code, Codex, Cursor, etc.) when working with code in this repository.
 
 ## Repository Overview
 
@@ -19,7 +19,7 @@ This is a dotfiles repository for managing configurations for various tools incl
 - `make -C neovim test FILE=tests/test_lsp.lua` - Run a single test file
 - `make -C neovim test-clean` - Delete the test sandbox (plugins/parsers are reinstalled on the next run)
 
-Tests live in `neovim/tests/test_*.lua` ([mini.test](https://github.com/nvim-mini/mini.test)). Each case starts a child Neovim with the real config against the plugin commits in `lazy-lock.json`. After `:Lazy update`, run `make test` before committing the new lockfile.
+Tests live in `neovim/tests/test_*.lua` ([mini.test](https://github.com/nvim-mini/mini.test)). Each case starts a child Neovim with the real config against the plugin commits in `lazy-lock.json`. After `:Lazy update`, run `make test` before committing the new lockfile. CI runs the same suite on changes under `neovim/` (`.github/workflows/neovim-tests.yml`).
 
 ### Individual Package Commands
 - `stow --no-folding --target=${HOME} <package>` - Install specific package manually
@@ -30,9 +30,10 @@ Tests live in `neovim/tests/test_*.lua` ([mini.test](https://github.com/nvim-min
 ### Package Structure
 Each tool configuration is organized as a separate "package" directory:
 - `asdf/` - Version manager tool versions (.tool-versions)
+- `cursor-agent/` - Cursor agent worker (systemd user service)
 - `git/` - Git configuration (.gitconfig with GPG signing enabled)
 - `mutt/` - Email client configuration (mbsync, msmtp, mutt configs)
-- `neovim/` - Neovim configuration (Lua-based config with lazy.nvim)
+- `neovim/` - Neovim configuration (Lua-based config with lazy.nvim); `neovim/tests/` and `neovim/.tests/` are excluded from stow via `neovim/.stow-local-ignore`
 - `taskwarrior/` - Task management (task, timewarrior, bugwarrior configs)
 
 ### Stow Integration
@@ -48,7 +49,8 @@ Each tool configuration is organized as a separate "package" directory:
 
 ## Development Notes
 
-- Neovim configuration uses lazy.nvim and has a placeholder Makefile
+- Neovim plugin specs live in `neovim/.config/nvim/lua/plugins/` (one file per concern, loaded with lazy.nvim's `import`); per-server LSP settings live in `after/lsp/`
+- `neovim/Makefile` installs external dependencies (`make -C neovim install`) and runs the tests
 - Git configuration includes GPG signing and verbose commits
 - Taskwarrior setup includes systemd service configurations
 - All packages can be installed individually or collectively via the main Makefile

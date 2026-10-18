@@ -24,7 +24,7 @@ T["indent scope animation is disabled"] = function()
 end
 
 T["picker opens and closes"] = MiniTest.new_set({
-  parametrize = { { "files" }, { "grep" }, { "buffers" }, { "keymaps" }, { "git_status" } },
+  parametrize = { { "files" }, { "grep" }, { "buffers" }, { "keymaps" }, { "git_log" } },
 })
 
 T["picker opens and closes"]["source"] = function(source)
@@ -33,6 +33,17 @@ T["picker opens and closes"]["source"] = function(source)
   child.lua "Snacks.picker.get()[1]:close()"
   eq(H.wait(child, "#Snacks.picker.get() == 0"), true)
   vim.uv.sleep(100)
+  H.expect_no_errors(child)
+end
+
+-- snacks closes a picker that has no results, so give git_status a change to list
+T["git_status picker lists changes"] = function()
+  local repo = H.tmpdir({ ["new.txt"] = "untracked" })
+  vim.system({ "git", "init", "--quiet", repo }):wait()
+  child.cmd("cd " .. repo)
+  child.lua "Snacks.picker.git_status()"
+  eq(H.wait(child, "#Snacks.picker.get() == 1 and #Snacks.picker.get()[1]:items() == 1"), true)
+  child.lua "Snacks.picker.get()[1]:close()"
   H.expect_no_errors(child)
 end
 

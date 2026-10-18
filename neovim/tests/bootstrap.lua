@@ -8,9 +8,16 @@ local function fail(msg)
 end
 
 local ok, err = pcall(function()
-  -- lazy.nvim can't restore itself, so check out its locked commit directly.
+  -- The sandbox works on a copy of the lockfile, and lazy.nvim rewrites that
+  -- copy when it installs missing plugins at startup (recording the `stable`
+  -- lazy.nvim it just cloned). Reset it from the repo's lockfile first.
   local Config = require "lazy.core.config"
-  local lock = vim.json.decode(table.concat(vim.fn.readfile(Config.options.lockfile), "\n"))
+  local config_dir = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.stdpath("config") .. "/init.lua"), ":h")
+  local lock_lines = vim.fn.readfile(config_dir .. "/lazy-lock.json")
+  vim.fn.writefile(lock_lines, Config.options.lockfile)
+  local lock = vim.json.decode(table.concat(lock_lines, "\n"))
+
+  -- lazy.nvim can't restore itself, so check out its locked commit directly.
   local lazy_dir, commit = Config.plugins["lazy.nvim"].dir, lock["lazy.nvim"].commit
   if vim.system({ "git", "-C", lazy_dir, "checkout", "--quiet", commit }):wait().code ~= 0 then
     vim.system({ "git", "-C", lazy_dir, "fetch", "--quiet", "origin", commit }):wait()
