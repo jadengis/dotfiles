@@ -29,6 +29,8 @@ end
 T["after/lsp overrides are merged"] = function()
   eq(child.lua_get [[vim.lsp.config.cssls.settings.css.lint.unknownAtRules]], "ignore")
   eq(child.lua_get [[vim.lsp.config.ts_ls.workspace_required]], true)
+  eq(child.lua_get [[vim.lsp.config.ts_ls.init_options.maxTsServerMemory]], 16384)
+  eq(child.lua_get [[vim.lsp.config.ts_ls.init_options.hostInfo]], "neovim") -- lspconfig default kept
   eq(child.lua_get [[#vim.lsp.config.jsonls.settings.json.schemas > 100]], true) -- SchemaStore
   eq(child.lua_get [[vim.lsp.config.roslyn_ls.settings["csharp|background_analysis"].dotnet_analyzer_diagnostics_scope]], "openFiles")
   eq(child.lua_get [[vim.lsp.config.html.settings.html.format.enable]], false)
