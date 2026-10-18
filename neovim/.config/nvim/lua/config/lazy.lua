@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -11,40 +11,37 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local spec = {
-  { "nvim-lua/popup.nvim",   lazy = false },
-  { "nvim-lua/plenary.nvim", lazy = false },
-  { "moll/vim-bbye",         lazy = false },
-  require "config.colorscheme",
-  require "config.cmp",
-  require "config.luasnip",
-  require "config.breadcrumbs",
-  require "config.copilot",
-  require "config.sidekick",
-  require "config.lsp",
-  require "config.dap",
-  require "config.telescope",
-  require "config.treesitter",
-  require "config.dressing",
-  require "config.autopairs",
-  require "config.gitsigns",
-  require "config.nvim-tree",
-  require "config.bufferline",
-  require "config.lualine",
-  require "config.indent_blankline",
-  require "config.sessions",
-  require "config.colorizer",
-  require "config.notify",
-  require "config.dadbod",
-  --[[ require "config.claudecode" ]]
-}
-
+-- Every file in lua/plugins/ returns a spec (or a list of specs).
 require("lazy").setup {
-  spec = spec,
+  spec = {
+    { import = "plugins" },
+  },
   install = {
-    colorscheme = { "darkplus", "default" },
+    colorscheme = { "vscode", "habamax" },
   },
   ui = {
     border = "rounded",
-  }
+  },
+  checker = {
+    enabled = true, -- check for plugin updates in the background
+    notify = false,
+  },
+  change_detection = {
+    notify = false,
+  },
+  rocks = {
+    enabled = false,
+  },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 }

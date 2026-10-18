@@ -1,8 +1,8 @@
 local options = {
   backup         = false,                     -- creates a backup file
   clipboard      = "unnamedplus",             -- allows neovim to access the system clipboard
-  cmdheight      = 2,                         -- more space in the neovim command line for displaying messages
-  completeopt    = { "menuone", "noselect" }, -- mostly just for cmp
+  cmdheight      = 1,                         -- ui2 removes the "Press ENTER" prompts that cmdheight=2 worked around
+  completeopt    = { "menuone", "noselect", "popup", "fuzzy" }, -- native completion (blink.cmp handles insert mode)
   conceallevel   = 0,                         -- so that `` is visible in markdown files
   fileencoding   = "utf-8",                   -- the encoding written to a file
   hlsearch       = true,                      -- highlight all matches on previous search pattern
@@ -26,7 +26,7 @@ local options = {
   tabstop        = 2,                         -- insert 2 spaces for a tab
   cursorline     = true,                      -- highlight the current line
   number         = true,                      -- set numbered lines
-  relativenumber = true,                     -- set relative numbered lines
+  relativenumber = true,                      -- set relative numbered lines
   numberwidth    = 4,                         -- set number column width to 2 {default 4}
   signcolumn     = "yes",                     -- always show the sign column, otherwise it would shift the text each time
   textwidth      = 0,                         -- don't hard wrap text
@@ -34,21 +34,23 @@ local options = {
   scrolloff      = 8,                         -- is one of my fav
   sidescrolloff  = 8,
   guifont        = "monospace:h17",           -- the font used in graphical neovim applications
+  winborder      = "rounded",                 -- default border for all floating windows (hover, signature, diagnostics...)
+  pumborder      = "rounded",                 -- border on the native popup menu
   foldmethod     = "expr",
-  foldexpr       = "nvim_treesitter#foldexpr()",
-  foldenable     = false,
+  foldexpr       = "v:lua.vim.treesitter.foldexpr()",
+  foldlevel      = 99,                        -- folds are available (zc, za...) but start open
+  foldlevelstart = 99,
+  autoread       = true,                      -- automatically read files when changed outside of neovim (AI agents)
+  autowrite      = true,                      -- automatically write files when switching buffers
 }
 
 vim.opt.shortmess:append "c"
+vim.opt.whichwrap:append "<,>,[,],h,l"
+vim.opt.iskeyword:append "-"
 
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
-
-vim.cmd "set whichwrap+=<,>,[,],h,l"
-vim.cmd [[set iskeyword+=-]]
-vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
-vim.cmd [[set clipboard+=unnamedplus]]
 
 -- Add filetypes
 vim.filetype.add({
@@ -58,17 +60,8 @@ vim.filetype.add({
   }
 })
 
--- Autoread behavior for AI Agents
-vim.opt.autoread = true -- automatically read files when changed outside of neovim
-vim.opt.autowrite = true -- automatically write files when switching buffers
-
--- Set up autocommands for more reliable file reloading
--- This checks for external changes when cursor stops moving, buffer is entered, or terminal regains focus
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "FocusGained", "BufEnter" }, {
-  pattern = "*",
-  callback = function()
-    if vim.api.nvim_get_mode().mode ~= "c" then
-      vim.cmd [[checktime]]
-    end
-  end,
-})
+-- Experimental 0.12 message/cmdline UI: no "Press ENTER" prompts, highlighted
+-- cmdline, messages in a pager buffer. Remove this if it misbehaves.
+if not vim.g.vscode then
+  pcall(function() require("vim._core.ui2").enable({}) end)
+end

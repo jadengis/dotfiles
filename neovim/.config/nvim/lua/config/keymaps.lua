@@ -1,7 +1,7 @@
-local opts = { noremap = true, silent = true }
+local opts = { silent = true }
 
 -- Shorten function name
-local keymap = vim.api.nvim_set_keymap
+local keymap = vim.keymap.set
 
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
@@ -21,11 +21,8 @@ vim.g.maplocalleader = " "
 keymap("n", "j", "gj", opts)
 keymap("n", "k", "gk", opts)
 
--- Search
-keymap("n", "<leader><Space>", ":nohl<cr>", opts)
-
--- Tree View
-keymap("n", "<leader>e", ":NvimTreeToggle<cr>", opts)
+-- Search: <Esc> clears search highlights (<leader><Space> is the smart picker)
+keymap("n", "<Esc>", "<cmd>nohlsearch<cr><Esc>", opts)
 
 -- Navigate buffers
 keymap("n", "<S-l>", ":bnext<CR>", opts)
@@ -67,8 +64,8 @@ keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
 -- Quick Fix
-keymap("n", "<leader>co", "<cmd>copen<cr>", opts) -- Open quick fix
-keymap("n", "<leader>cc", "<cmd>cclose<cr>", opts) -- Close quick fix
+keymap("n", "<leader>co", "<cmd>copen<cr>", { silent = true, desc = "Open quickfix" })
+keymap("n", "<leader>cc", "<cmd>cclose<cr>", { silent = true, desc = "Close quickfix" })
 
 -- Only load the following keymaps if not in vscode.
 if not vim.g.vscode then
@@ -84,14 +81,13 @@ if not vim.g.vscode then
   keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
   keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
-  -- Formatting
-  keymap("n", "<leader>tf", "<cmd>Format<cr>", opts) -- Tools Format
-
   -- Buffers
-  keymap("n", "<S-q>", "<cmd>Bdelete!<cr>", opts) -- Close buffer without close window
-  keymap("n", "<A-Q>", "<cmd>qa<cr>", opts) -- Close buffer without close window
+  -- <S-q> (close buffer, keep window) lives in plugins/snacks.lua
+  keymap("n", "<A-Q>", "<cmd>qa<cr>", { silent = true, desc = "Quit all" })
 else
--- Better window navigation
+  keymap("n", "<leader><Space>", "<cmd>nohlsearch<cr>", opts)
+
+  -- Better window navigation
   keymap("n", "<C-A-h>", "<C-w>h", opts)
   keymap("n", "<C-A-j>", "<C-w>j", opts)
   keymap("n", "<C-A-k>", "<C-w>k", opts)
