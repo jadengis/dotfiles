@@ -14,6 +14,13 @@ This is a dotfiles repository for managing configurations for various tools incl
 - `make <package>` - Install specific package (e.g., `make neovim`, `make git`)
 - `make clean_<package>` - Remove specific package configuration
 
+### Testing
+- `make test` - Run the neovim config test suite (headless, sandboxed in `neovim/.tests/`)
+- `make -C neovim test FILE=tests/test_lsp.lua` - Run a single test file
+- `make -C neovim test-clean` - Delete the test sandbox (plugins/parsers are reinstalled on the next run)
+
+Tests live in `neovim/tests/test_*.lua` ([mini.test](https://github.com/nvim-mini/mini.test)). Each case starts a child Neovim with the real config against the plugin commits in `lazy-lock.json`. After `:Lazy update`, run `make test` before committing the new lockfile.
+
 ### Individual Package Commands
 - `stow --no-folding --target=${HOME} <package>` - Install specific package manually
 - `stow --target=${HOME} --delete <package>` - Remove specific package manually

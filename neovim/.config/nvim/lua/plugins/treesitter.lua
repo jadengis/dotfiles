@@ -3,8 +3,9 @@ local M = {
   lazy = false,
   branch = "main",
   build = ":TSUpdate",
-  config = function()
-    local parser_installed = {
+  opts = {
+    -- parsers to install; tests/bootstrap.lua reads this list too
+    parsers = {
       "javascript",
       "typescript",
       "tsx",
@@ -16,6 +17,7 @@ local M = {
       "erlang",
       "go",
       "c",
+      "c_sharp",
       "lua",
       "vim",
       "vimdoc",
@@ -35,22 +37,27 @@ local M = {
       "gitignore",
       "jinja",
       "embedded_template",
-      "ini"
-    }
-
-    require("nvim-treesitter").install(parser_installed)
+      "ini",
+    },
+  },
+  config = function(_, opts)
+    require("nvim-treesitter").install(opts.parsers)
 
     -- use the markdown parser for mdx files (no dedicated mdx parser exists)
     vim.treesitter.language.register("markdown", "mdx")
 
-    -- filetypes that should auto-start treesitter but have no parser of their
-    -- own name (e.g. mdx -> markdown), so they must not be passed to install()
-    local highlight_filetypes = vim.list_extend(vim.deepcopy(parser_installed), { "mdx" })
+    -- Parser names aren't always filetype names (c_sharp -> cs, tsx ->
+    -- typescriptreact, bash -> sh, vimdoc -> help), so start treesitter for
+    -- every filetype registered to an installed parser.
+    local filetypes = {}
+    for _, lang in ipairs(opts.parsers) do
+      vim.list_extend(filetypes, vim.treesitter.language.get_filetypes(lang))
+    end
 
     -- auto-start highlights & indentation
     vim.api.nvim_create_autocmd("FileType", {
       desc = "User: enable treesitter highlighting",
-      pattern = highlight_filetypes,
+      pattern = filetypes,
       callback = function(ctx)
         -- highlights (folds use vim.treesitter.foldexpr() globally, see options.lua)
         local ok = pcall(vim.treesitter.start)             -- errors for filetypes with no parser

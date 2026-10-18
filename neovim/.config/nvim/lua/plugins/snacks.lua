@@ -9,7 +9,10 @@ local M = {
     quickfile = { enabled = true },    -- render `nvim file` before plugins load
     notifier = { enabled = true, timeout = 4000, top_down = false },
     input = { enabled = true },        -- vim.ui.input
-    indent = { enabled = true },       -- indent guides + current scope
+    indent = {                         -- indent guides + current scope
+      enabled = true,
+      animate = { enabled = false },   -- draw the scope line instantly
+    },
     scope = { enabled = true },        -- ii/ai text objects, [i/]i jumps
     words = { enabled = true },        -- highlight LSP references, ]]/[[ to jump
     statuscolumn = { enabled = true },
@@ -25,6 +28,7 @@ local M = {
           },
         },
       },
+      exclude = { "*.meta" }, -- Unity asset metadata
       sources = {
         files = { hidden = true },
         grep = { hidden = true },

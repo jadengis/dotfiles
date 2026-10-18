@@ -1,0 +1,22 @@
+# Files in this package that must not be linked into $HOME.
+# (A local ignore list replaces stow's built-in defaults, which are repeated here.)
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+^/Makefile
+^/tests
+^/\.tests

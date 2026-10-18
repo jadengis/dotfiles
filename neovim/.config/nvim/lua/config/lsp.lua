@@ -21,6 +21,7 @@ M.servers = {
   "lua_ls",
   "texlab",
   "sqlls",
+  "roslyn_ls", -- C# / Unity (needs the dotnet SDK)
   "copilot", -- inline completion + sidekick next-edit suggestions
 }
 

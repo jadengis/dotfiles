@@ -5,7 +5,11 @@ INSTALL_PACKAGES := $(ALL_PACKAGES:%=install_%)
 all: $(ALL_PACKAGES)
 clean: $(CLEAN_PACKAGES)
 install: $(INSTALL_PACKAGES)
-.PHONY: all clean install $(ALL_PACKAGES) $(CLEAN_PACKAGES) $(INSTALL_PACKAGES)
+.PHONY: all clean install test $(ALL_PACKAGES) $(CLEAN_PACKAGES) $(INSTALL_PACKAGES)
+
+# Config test suites
+test:
+	$(MAKE) -C neovim test
 
 # Helper function to check if a command exists
 check_command = $(shell command -v $(1) >/dev/null 2>&1 && echo "exists" || echo "missing")

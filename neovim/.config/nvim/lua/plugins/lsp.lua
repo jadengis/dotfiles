@@ -1,7 +1,11 @@
 local M = {
   {
     "neovim/nvim-lspconfig", -- provides the lsp/<server>.lua default configs
-    event = { "BufReadPre", "BufNewFile" },
+    -- Load at startup: vim.lsp.enable() called after VimEnter re-fires FileType,
+    -- which sets did_filetype() for the rest of that event. When that happened
+    -- inside BufNewFile or a session restore, the buffer's own `:setf` was
+    -- skipped, leaving it with no filetype (no treesitter, no LSP).
+    lazy = false,
     dependencies = {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
@@ -16,15 +20,18 @@ local M = {
       }
 
       -- Install formatters and other tools that aren't language servers.
-      local registry = require "mason-registry"
-      registry.refresh(function()
-        for _, tool in ipairs(lsp.tools) do
-          local ok, pkg = pcall(registry.get_package, tool)
-          if ok and not pkg:is_installed() then
-            pkg:install()
+      -- Skipped without a UI (headless/tests), like mason-lspconfig does.
+      if #vim.api.nvim_list_uis() > 0 then
+        local registry = require "mason-registry"
+        registry.refresh(function()
+          for _, tool in ipairs(lsp.tools) do
+            local ok, pkg = pcall(registry.get_package, tool)
+            if ok and not pkg:is_installed() then
+              pkg:install()
+            end
           end
-        end
-      end)
+        end)
+      end
 
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(),

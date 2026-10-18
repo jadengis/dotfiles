@@ -57,6 +57,12 @@ vim.filetype.add({
   extension = {
     mdoc = "markdoc",
     mdx = "mdx",
+    -- Unity
+    uss = "css",
+    uxml = "xml",
+    asmdef = "json",
+    asmref = "json",
+    inputactions = "json",
   }
 })
 
