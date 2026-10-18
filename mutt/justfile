@@ -1,0 +1,20 @@
+import '../common.just'
+
+# command:package
+linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp urlview:urlview gpg:gnupg2"
+macos_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp urlview:urlview gpg:gnupg"
+packages := if os() == "macos" { macos_packages } else { linux_packages }
+systemd_units := "mbsync.timer"
+
+# Link the mail config into $HOME and install its dependencies
+[default]
+setup: link install
+
+# Install neomutt and the mail tools, then start the mbsync timer
+install: check-deps enable-services
+
+# Install any missing command-line dependencies
+check-deps: (_packages packages)
+
+# Enable and start the mbsync timer
+enable-services: (_systemd-units systemd_units)

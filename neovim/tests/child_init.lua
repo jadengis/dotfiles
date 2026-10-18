@@ -2,7 +2,7 @@
 --
 -- mini.test always starts children with --clean, which drops the user config
 -- and data dirs from 'runtimepath', so put them back before sourcing init.lua.
--- The XDG_* variables set by `make test` point stdpath() at neovim/.tests/.
+-- The XDG_* variables set by `just test` point stdpath() at neovim/.tests/.
 local config = vim.fn.stdpath("config")
 local site = vim.fn.stdpath("data") .. "/site"
 

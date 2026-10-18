@@ -1,0 +1,11 @@
+import '../common.just'
+
+# command:package
+packages := if os() == "macos" { "git:git gpg:gnupg" } else { "git:git gpg:gnupg2" }
+
+# Link the git config into $HOME and install its dependencies
+[default]
+setup: link install
+
+# Install git and gnupg (commits are GPG-signed)
+install: (_packages packages)

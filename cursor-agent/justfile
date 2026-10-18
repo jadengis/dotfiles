@@ -1,0 +1,19 @@
+import '../common.just'
+
+systemd_units := "cursor-agent-worker.service"
+
+# Link the cursor agent worker unit into $HOME and enable it
+[default]
+setup: link install
+
+# Enable and start the worker service (needs the agent CLI)
+install:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v agent >/dev/null 2>&1; then
+        echo "agent not found; install via: curl https://cursor.com/install -fsS | bash"
+        echo "Then run: agent login   (or set --api-key in ~/.config/cursor-agent/worker.env)"
+        echo "Then rerun: just cursor-agent::install"
+        exit 0
+    fi
+    {{ just_executable() }} --justfile {{ quote(source_file()) }} _systemd-units {{ systemd_units }}

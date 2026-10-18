@@ -17,6 +17,6 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-^/Makefile
+^/justfile
 ^/tests
 ^/\.tests

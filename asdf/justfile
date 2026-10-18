@@ -1,0 +1,60 @@
+import '../common.just'
+
+# command:package
+packages := "git:git curl:curl"
+asdf_version := "v0.18.0"
+asdf_plugins := "nodejs erlang elixir"
+
+# Link .tool-versions into $HOME and install asdf with its languages
+[default]
+setup: link install
+
+# Install asdf, its plugins and the versions in .tool-versions
+install: check-deps install-plugins install-versions
+
+# Install asdf and any missing command-line dependencies
+check-deps: install-asdf (_packages packages)
+
+bashrc := home_directory() / ".bashrc"
+
+# Clone asdf into ~/.asdf and source it from ~/.bashrc
+install-asdf: _clone-asdf (_append-line bashrc '. "${HOME}/.asdf/asdf.sh"' "ASDF sourcing") (_append-line bashrc '. "${HOME}/.asdf/completions/asdf.bash"' "ASDF completions")
+
+_clone-asdf:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -d "$HOME/.asdf" ]; then
+        echo "ASDF already installed"
+    else
+        echo "ASDF not found. Installing..."
+        git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch {{ asdf_version }}
+    fi
+
+# Add the asdf plugins for each language
+install-plugins:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Installing ASDF plugins..."
+    export PATH="$HOME/.asdf/bin:$PATH"
+    . "$HOME/.asdf/asdf.sh"
+    for plugin in {{ asdf_plugins }}; do
+        if asdf plugin list | grep -qx "$plugin"; then
+            echo "$plugin plugin already installed"
+        else
+            echo "Installing $plugin plugin..."
+            asdf plugin add "$plugin"
+        fi
+    done
+
+# Install the language versions in .tool-versions
+install-versions:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Installing language versions from .tool-versions..."
+    if [ ! -f .tool-versions ]; then
+        echo "No .tool-versions file found"
+        exit 0
+    fi
+    export PATH="$HOME/.asdf/bin:$PATH"
+    . "$HOME/.asdf/asdf.sh"
+    asdf install

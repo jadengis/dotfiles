@@ -1,0 +1,67 @@
+import '../common.just'
+
+# command:package
+linux_packages := "nvim:neovim git:git curl:curl rg:ripgrep fd:fd-find tree-sitter:tree-sitter-cli make:make gcc:gcc dotnet:dotnet-sdk-10.0"
+macos_packages := "nvim:neovim stow:stow git:git rg:ripgrep fd:fd lazygit:lazygit tree-sitter:tree-sitter-cli"
+packages := if os() == "macos" { macos_packages } else { linux_packages }
+casks := "dotnet-sdk font-jetbrains-mono-nerd-font"
+
+# Config tests run in a sandbox: plugins, parsers and state live in .tests/,
+# never in ~/.local/share/nvim.
+test_dir := module_directory() / ".tests"
+test_env := "XDG_CONFIG_HOME=" + quote(test_dir / "config") + " XDG_DATA_HOME=" + quote(test_dir / "data") + " XDG_STATE_HOME=" + quote(test_dir / "state") + " XDG_CACHE_HOME=" + quote(test_dir / "cache")
+mini_test_version := "v0.18.0"
+
+# Link the neovim config into $HOME and install its dependencies
+[default]
+setup: link install
+
+# Install neovim and the tools the config uses
+[linux]
+install: check-deps _lazygit
+
+# Install neovim and the tools the config uses
+[macos]
+install: check-deps (_casks casks)
+
+# Install any missing command-line dependencies
+check-deps: (_packages packages)
+
+# lazygit (used by Snacks.lazygit) isn't in the Fedora repos; it comes from COPR.
+[linux]
+_lazygit:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if command -v lazygit >/dev/null 2>&1; then
+        echo "lazygit already installed"
+    else
+        echo "lazygit not found. Installing from COPR atim/lazygit..."
+        sudo dnf copr enable -y atim/lazygit
+        sudo dnf install -y lazygit
+    fi
+
+# Run the config tests against lazy-lock.json (optionally only the given files, e.g. tests/test_lsp.lua)
+test *files: test-deps
+    @TEST_FILES={{ quote(files) }} {{ test_env }} nvim --headless --noplugin -u tests/minimal_init.lua \
+        -c "lua local f = vim.split(vim.env.TEST_FILES or '', ' ', { trimempty = true }); MiniTest.run(#f > 0 and { collect = { find_files = function() return f end } } or nil)"
+
+# Install mini.test, then plugins at their locked commits and treesitter parsers
+test-deps:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    test_dir={{ quote(test_dir) }}
+    # Link the config in, but give the sandbox its own copy of the lockfile so
+    # test runs can never rewrite the real one.
+    rm -rf "$test_dir/config"
+    mkdir -p "$test_dir/config/nvim" "$test_dir/deps"
+    ln -s "$PWD"/.config/nvim/* "$test_dir/config/nvim/"
+    rm "$test_dir/config/nvim/lazy-lock.json"
+    cp .config/nvim/lazy-lock.json "$test_dir/config/nvim/"
+    [ -d "$test_dir/deps/mini.test" ] || git clone --quiet --depth 1 --branch {{ mini_test_version }} \
+        https://github.com/nvim-mini/mini.test "$test_dir/deps/mini.test"
+    echo "Syncing test plugins with lazy-lock.json..."
+    {{ test_env }} nvim --headless -c "luafile tests/bootstrap.lua" >/dev/null
+
+# Delete the test sandbox (plugins and parsers are reinstalled on the next run)
+test-clean:
+    rm -rf {{ quote(test_dir) }}

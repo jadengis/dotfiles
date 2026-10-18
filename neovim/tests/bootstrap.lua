@@ -1,4 +1,4 @@
--- Prepares neovim/.tests/ for the test suite (run by `make test-deps`):
+-- Prepares neovim/.tests/ for the test suite (run by `just neovim::test-deps`):
 -- installs every plugin at the commit pinned in lazy-lock.json and builds the
 -- configured treesitter parsers. Runs with the real config loaded:
 --   nvim --headless -c "luafile tests/bootstrap.lua"

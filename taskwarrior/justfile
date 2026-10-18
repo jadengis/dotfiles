@@ -1,0 +1,23 @@
+import '../common.just'
+
+# command:package
+linux_packages := "task:task timew:timewarrior python3:python3 pip3:python3-pip"
+macos_packages := "task:task timew:timewarrior python3:python"
+packages := if os() == "macos" { macos_packages } else { linux_packages }
+systemd_units := "bugwarrior-pull.timer"
+
+# Link the taskwarrior config into $HOME and install its dependencies
+[default]
+setup: link install
+
+# Install task, timew and bugwarrior, then start the bugwarrior timer
+install: check-deps install-python-deps enable-services
+
+# Install any missing command-line dependencies
+check-deps: (_packages packages)
+
+# Install bugwarrior with pip
+install-python-deps: (_python-module "bugwarrior" "bugwarrior")
+
+# Enable and start the bugwarrior pull timer
+enable-services: (_systemd-units systemd_units)
