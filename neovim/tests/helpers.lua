@@ -73,6 +73,24 @@ function H.errors(child)
   ]])
 end
 
+--- Deprecation warnings reported so far in the child (vim.deprecate() and
+--- plugins' own deprecation notices).
+---@param child MiniTest.child
+---@return string[]
+function H.deprecations(child)
+  return child.lua([[
+    local found = {}
+    local messages = vim.api.nvim_exec2("messages", { output = true }).output
+    for _, line in ipairs(vim.split(messages, "\n")) do
+      if line:lower():match("deprecat") then table.insert(found, line) end
+    end
+    for _, n in ipairs(Snacks.notifier.get_history({ filter = "warn" })) do
+      if n.msg:lower():match("deprecat") then table.insert(found, ("[%s] %s"):format(n.title or "notify", n.msg)) end
+    end
+    return found
+  ]])
+end
+
 --- Assert that the child has reported no errors.
 ---@param child MiniTest.child
 function H.expect_no_errors(child)

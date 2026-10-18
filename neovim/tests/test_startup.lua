@@ -52,6 +52,7 @@ T["every plugin loads without errors"] = function()
   ]])
   eq(not_loaded, {})
   H.expect_no_errors(child)
+  eq(H.deprecations(child), {})
 end
 
 T["lazy.nvim health check has no errors"] = function()
@@ -72,7 +73,11 @@ end
 
 T["diagnostic signs use custom icons"] = function()
   -- sign_define() no longer configures diagnostic signs on 0.12
-  eq(child.lua_get "#vim.tbl_keys(vim.diagnostic.config().signs.text)", 4)
+  local texts = child.lua_get "vim.diagnostic.config().signs.text"
+  eq(#vim.tbl_keys(texts), 4)
+  for severity, text in pairs(texts) do
+    eq({ severity, vim.fn.strdisplaywidth(text) > 0 }, { severity, true })
+  end
 end
 
 T["formatoptions drop comment continuation"] = function()

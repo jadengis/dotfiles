@@ -40,6 +40,17 @@ T["queries compile against every installed parser"] = function()
   eq(broken, {})
 end
 
+-- after/queries/ files use `; extends`, so they're appended to the base query
+T["markdown query extensions load from after/"] = MiniTest.new_set({
+  parametrize = { { "highlights" }, { "injections" } },
+})
+
+T["markdown query extensions load from after/"]["query"] = function(kind)
+  local files = child.lua_get(([[vim.treesitter.query.get_files("markdown", %q)]]):format(kind))
+  eq(#files > 1, true) -- a base query plus our extension
+  eq(files[#files]:match("/after/queries/markdown/" .. kind .. "%.scm$") ~= nil, true)
+end
+
 -- Parser names don't always match filetypes (tsx -> typescriptreact, ...).
 T["highlighting starts for"] = MiniTest.new_set({
   parametrize = {

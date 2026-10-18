@@ -1,15 +1,9 @@
--- Resolve debugger command.
-local cmd = vim.fn.stdpath("data") .. '/mason/packages/elixir-ls/debugger.sh' -- debugger.bat for windows
-local install_path = vim.fn.stdpath("data") .. "/elixir-ls/debugger.sh"
-if vim.fn.empty(vim.fn.glob(install_path)) == 0 then
-   cmd =  install_path
-end
-
+-- ElixirLS debug adapter, installed by mason together with elixir-ls.
 local M = {}
 M.adapters = {
   mix_task = {
     type = "executable",
-    command = cmd,
+    command = vim.fn.stdpath("data") .. "/mason/bin/elixir-ls-debugger",
     args = {}
   }
 }
@@ -37,4 +31,16 @@ M.configurations = {
     },
   }
 }
+
+-- ElixirLS advertises exception breakpoint filters but then rejects
+-- setExceptionBreakpoints, which nvim-dap reports as an error at the start of
+-- every session. Drop the capability so the request isn't sent.
+function M.setup(dap)
+  dap.listeners.after.initialize.elixir_ls = function(session)
+    if session.config.type == "mix_task" then
+      session.capabilities.exceptionBreakpointFilters = nil
+    end
+  end
+end
+
 return M

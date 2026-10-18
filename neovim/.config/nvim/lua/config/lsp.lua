@@ -25,10 +25,11 @@ M.servers = {
   "copilot", -- inline completion + sidekick next-edit suggestions
 }
 
--- Formatters and other non-LSP tools installed through mason.
+-- Formatters, debug adapters and other non-LSP tools installed through mason.
 M.tools = {
   "stylua",
   "prettierd",
+  "js-debug-adapter", -- JS/TS debugging (config/dap_js.lua)
 }
 
 local function diagnostics()
@@ -37,10 +38,10 @@ local function diagnostics()
     virtual_text = true,
     signs = {
       text = {
-        [severity.ERROR] = "",
-        [severity.WARN] = "",
-        [severity.HINT] = "",
-        [severity.INFO] = "",
+        [severity.ERROR] = "",
+        [severity.WARN] = "",
+        [severity.HINT] = "",
+        [severity.INFO] = "",
       },
     },
     update_in_insert = true,
