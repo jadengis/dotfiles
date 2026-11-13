@@ -46,12 +46,32 @@ T["conform picks the right formatters"] = MiniTest.new_set({
     { "a.lua", { "stylua" } },
     { "a.ts", { "prettierd", "prettier" } },
     { "a.json", { "prettierd", "prettier" } },
+    { "a.rs", { "rustfmt" } },
   },
 })
 
 T["conform picks the right formatters"]["for"] = function(name, formatters)
   child.cmd("edit " .. H.tmpdir() .. "/" .. name)
   eq(child.lua_get [[require("conform").list_formatters_for_buffer()]], formatters)
+end
+
+T["firestore rules load vim-firestore on demand"] = function()
+  local loaded = [[require("lazy.core.config").plugins["vim-firestore"]._.loaded ~= nil]]
+  eq(child.lua_get(loaded), false)
+  -- an existing file: BufRead, not BufNewFile, is where detection went wrong
+  local rules = H.tmpdir() .. "/firestore.rules"
+  vim.fn.writefile({ "rules_version = '2';", "service cloud.firestore {}" }, rules)
+  child.cmd("edit " .. rules)
+  eq(child.lua_get "vim.bo.filetype", "firestore")
+  eq(child.lua_get(loaded), true)
+  eq(child.lua_get "vim.b.current_syntax", "firestore")
+  eq(child.lua_get "vim.bo.commentstring", "// %s")
+  -- the plugin's ftdetect (*.rules -> firestore) must not take over udev rules
+  local udev = H.tmpdir() .. "/etc/udev/rules.d"
+  vim.fn.mkdir(udev, "p")
+  child.cmd("edit " .. udev .. "/99-test.rules")
+  eq(child.lua_get "vim.bo.filetype", "udevrules")
+  H.expect_no_errors(child)
 end
 
 T["format on save is off by default"] = function()

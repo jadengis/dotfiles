@@ -18,6 +18,7 @@ local M = {
       "go",
       "c",
       "c_sharp",
+      "rust",
       "lua",
       "vim",
       "vimdoc",

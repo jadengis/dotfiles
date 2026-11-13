@@ -63,6 +63,12 @@ vim.filetype.add({
     asmdef = "json",
     asmref = "json",
     inputactions = "json",
+    -- Firebase security rules (plugins/firestore.lua). Keep Neovim's udev,
+    -- ufw and polkit detection; only its "hog" (Snort) fallback becomes firestore.
+    rules = function(path)
+      local ft = require("vim.filetype.detect").rules(path)
+      return ft == "hog" and "firestore" or ft
+    end,
   }
 })
 

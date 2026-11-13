@@ -18,6 +18,7 @@ local M = {
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
+      rust = { "rustfmt" }, -- from rustup; reads rustfmt.toml and the crate edition
       javascript = prettier,
       javascriptreact = prettier,
       typescript = prettier,

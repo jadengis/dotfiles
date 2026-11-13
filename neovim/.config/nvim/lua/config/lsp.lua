@@ -22,6 +22,7 @@ M.servers = {
   "texlab",
   "sqlls",
   "roslyn_ls", -- C# / Unity (needs the dotnet SDK)
+  "rust_analyzer", -- Rust (cargo/rustfmt/clippy come from rustup)
   "copilot", -- inline completion + sidekick next-edit suggestions
 }
 

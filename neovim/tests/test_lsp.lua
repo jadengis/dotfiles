@@ -34,6 +34,7 @@ T["after/lsp overrides are merged"] = function()
   eq(child.lua_get [[#vim.lsp.config.jsonls.settings.json.schemas > 100]], true) -- SchemaStore
   eq(child.lua_get [[vim.lsp.config.roslyn_ls.settings["csharp|background_analysis"].dotnet_analyzer_diagnostics_scope]], "openFiles")
   eq(child.lua_get [[vim.lsp.config.html.settings.html.format.enable]], false)
+  eq(child.lua_get [[vim.lsp.config.rust_analyzer.settings["rust-analyzer"].check.command]], "clippy")
 end
 
 T["completion capabilities come from blink.cmp"] = function()
