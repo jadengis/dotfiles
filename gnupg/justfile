@@ -1,0 +1,16 @@
+import '../common.just'
+
+# command:package
+packages := if os() == "macos" { "gpg:gnupg" } else { "gpg:gnupg2" }
+
+# Link the gpg-agent config into $HOME and install gnupg
+[default]
+setup: link install
+
+# Install gnupg, lock down ~/.gnupg and reload the agent
+install: (_packages packages) permissions
+
+# gpg refuses to trust a ~/.gnupg that others can read (stow creates it 755)
+permissions:
+    chmod 700 ~/.gnupg
+    -gpg-connect-agent reloadagent /bye
