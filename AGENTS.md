@@ -37,9 +37,11 @@ Tests live in `neovim/tests/test_*.lua` ([mini.test](https://github.com/nvim-min
 ### Package Structure
 Each tool configuration is organized as a separate "package" directory:
 - `asdf/` - Version manager tool versions (.tool-versions)
+- `backup/` - restic backups of `~/Mail`, pass and gnupg to the second disk (`/mnt/backup`); daily backup + weekly check timers, `just backup::disk-setup` / `init` for first-time setup
 - `cursor-agent/` - Cursor agent worker (systemd user service)
 - `git/` - Git configuration (.gitconfig with GPG signing enabled)
-- `mutt/` - Email client configuration (mbsync, msmtp, mutt configs)
+- `gnupg/` - gpg-agent configuration
+- `mutt/` - Email: mbsync syncs Fastmail into a two-way mirror (`~/Mail/Fastmail`) and a pull-only archive (`~/Mail/Vault`), notmuch indexes both, neomutt reads the mirror (`mail-vault` opens the archive read-only), msmtp sends. The app password lives in pass (`just mutt::secrets`), never in the repo
 - `neovim/` - Neovim configuration (Lua-based config with lazy.nvim); `neovim/justfile`, `neovim/tests/` and `neovim/.tests/` are excluded from stow via `neovim/.stow-local-ignore`
 - `taskwarrior/` - Task management (task, timewarrior, bugwarrior configs)
 
@@ -60,4 +62,4 @@ Each tool configuration is organized as a separate "package" directory:
 - `neovim/justfile` installs external dependencies (`just neovim::install`) and runs the tests
 - Git configuration includes GPG signing and verbose commits
 - Taskwarrior setup includes systemd service configurations
-- All packages can be installed individually or collectively via the main Makefile
+- All packages can be installed individually or collectively via the root justfile

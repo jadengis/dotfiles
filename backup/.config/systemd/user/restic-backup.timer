@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily restic backup
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=1h
+# catch up on a missed run if the machine was off
+Persistent=true
+
+[Install]
+WantedBy=timers.target

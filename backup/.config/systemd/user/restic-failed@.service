@@ -1,0 +1,6 @@
+[Unit]
+Description=Desktop notification when %i fails
+
+[Service]
+Type=oneshot
+ExecStart=notify-send --urgency=critical --app-name=restic "Backup job failed: %i" "Details: journalctl --user -u %i"

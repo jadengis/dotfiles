@@ -1,0 +1,126 @@
+import '../common.just'
+
+# command:package
+packages := if os() == "macos" { "restic:restic" } else { "restic:restic notify-send:libnotify" }
+systemd_units := "restic-backup.timer restic-check.timer"
+
+# The second internal disk (LUKS) and where it gets mounted
+backup_disk := "b430c36d-aeca-4adf-aae2-b8515691d062"
+mount_point := "/mnt/backup"
+
+# Link the restic config into $HOME and install restic
+[default]
+setup: link install
+
+# Install restic and start the timers (once the repository exists)
+install: (_packages packages) enable-services
+
+# Start the daily backup and weekly check timers, if the repository exists
+[linux]
+enable-services:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    set -a; . ~/.config/restic/env; set +a
+    if [ ! -f "$RESTIC_REPOSITORY/config" ]; then
+        echo "Not starting the backup timers: no restic repository at $RESTIC_REPOSITORY."
+        echo "Run 'just backup::disk-setup' (once) and 'just backup::init', then 'just backup::install'."
+        exit 0
+    fi
+    systemctl --user daemon-reload
+    systemctl --user enable --now {{ systemd_units }}
+
+[macos]
+enable-services:
+    @echo "No systemd on macOS; back up by hand with 'just backup::restic backup ~/Mail'"
+
+# One-time: unlock the backup disk at boot with a keyfile and mount it at /mnt/backup (sudo)
+[linux]
+disk-setup uuid=backup_disk:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dev=/dev/disk/by-uuid/{{ uuid }}
+    keydir=/etc/cryptsetup-keys.d
+    key=$keydir/backup.key
+    header=$keydir/backup.header
+
+    [ "$(lsblk -dno FSTYPE "$dev")" = crypto_LUKS ] || { echo "$dev is not a LUKS disk" >&2; exit 1; }
+    if lsblk -nlo TYPE,NAME "$dev" | awk '$1 == "crypt" && $2 != "backup" { found = 1 } END { exit !found }'; then
+        echo "The disk is unlocked under another name. Eject it in Files first, then re-run." >&2
+        exit 1
+    fi
+
+    echo "== Keyfile (random bytes on the encrypted system disk, readable only by root)"
+    sudo install -d -m 700 "$keydir"
+    if ! sudo test -f "$key"; then
+        sudo dd if=/dev/urandom of="$key" bs=512 count=1 status=none
+        sudo chmod 400 "$key"
+    fi
+
+    echo "== LUKS header backup ($header)"
+    sudo test -f "$header" || sudo cryptsetup luksHeaderBackup "$dev" --header-backup-file "$header"
+
+    echo "== Key slot"
+    if sudo cryptsetup open --test-passphrase --key-file "$key" "$dev" 2>/dev/null; then
+        echo "keyfile already unlocks the disk"
+    else
+        echo "Adding the keyfile as an extra key. Enter the disk's existing passphrase:"
+        sudo cryptsetup luksAddKey "$dev" "$key"
+    fi
+
+    echo "== /etc/crypttab and /etc/fstab"
+    sudo grep -q '^backup ' /etc/crypttab 2>/dev/null \
+        || echo "backup UUID={{ uuid }} $key luks,nofail" | sudo tee -a /etc/crypttab
+    grep -q '[[:space:]]{{ mount_point }}[[:space:]]' /etc/fstab \
+        || echo "/dev/mapper/backup {{ mount_point }} auto defaults,nofail,x-systemd.device-timeout=10s 0 0" | sudo tee -a /etc/fstab
+
+    echo "== Unlock and mount"
+    sudo mkdir -p {{ mount_point }}
+    sudo systemctl daemon-reload
+    sudo systemctl start systemd-cryptsetup@backup.service
+    mountpoint -q {{ mount_point }} || sudo mount {{ mount_point }}
+    sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 700 {{ mount_point }}/restic
+    echo "Mounted $(findmnt -no SOURCE,FSTYPE {{ mount_point }}) at {{ mount_point }}; backups go in {{ mount_point }}/restic"
+    echo "Tip: copy $header to your offline kit too (sudo cp, it is root-only)."
+
+# Create the restic repository (and its password in pass, if missing)
+init:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    set -a; . ~/.config/restic/env; set +a
+    store=${PASSWORD_STORE_DIR:-$HOME/.password-store}
+    if [ ! -f "$store/Backup/Restic.gpg" ]; then
+        pass generate --no-symbols Backup/Restic 40 >/dev/null
+        echo "Generated the repository password in pass (Backup/Restic)."
+        echo "Keep a copy OFF this machine (paper or another password manager):"
+        echo "    pass show Backup/Restic"
+    fi
+    if [ -f "$RESTIC_REPOSITORY/config" ]; then
+        echo "Repository already exists at $RESTIC_REPOSITORY"
+    else
+        restic init
+    fi
+
+# Run a backup right now (the same job the daily timer runs)
+[linux]
+now:
+    systemctl --user start restic-backup.service
+    @{{ just_executable() }} --justfile {{ quote(source_file()) }} restic snapshots --latest 3
+
+# Run any restic command against the repository, e.g. `just backup::restic snapshots`
+[positional-arguments]
+restic *args:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    set -a; . ~/.config/restic/env; set +a
+    exec restic "$@"
+
+# Show the timers, the last runs, and the latest snapshots
+status:
+    #!/usr/bin/env bash
+    set -uo pipefail
+    systemctl --user list-timers {{ systemd_units }} --no-pager 2>/dev/null
+    echo
+    systemctl --user status restic-backup.service restic-check.service --no-pager --lines=3 2>/dev/null
+    echo
+    set -a; . ~/.config/restic/env; set +a
+    restic snapshots --latest 5 2>&1 || true

@@ -4,8 +4,10 @@
 #   just <package>::unlink  remove its links
 
 mod asdf
+mod backup
 mod cursor-agent
 mod git
+mod gnupg
 mod mutt
 mod neovim
 mod taskwarrior
@@ -16,13 +18,13 @@ list:
     @{{ just_executable() }} --justfile {{ quote(justfile()) }} --list --list-submodules
 
 # Link every package into $HOME and install its dependencies
-all: asdf::setup cursor-agent::setup git::setup mutt::setup neovim::setup taskwarrior::setup
+all: asdf::setup backup::setup cursor-agent::setup git::setup gnupg::setup mutt::setup neovim::setup taskwarrior::setup
 
 # Remove every package's links from $HOME
-clean: asdf::unlink cursor-agent::unlink git::unlink mutt::unlink neovim::unlink taskwarrior::unlink
+clean: asdf::unlink backup::unlink cursor-agent::unlink git::unlink gnupg::unlink mutt::unlink neovim::unlink taskwarrior::unlink
 
 # Install every package's dependencies without linking anything
-install: asdf::install cursor-agent::install git::install mutt::install neovim::install taskwarrior::install
+install: asdf::install backup::install cursor-agent::install git::install gnupg::install mutt::install neovim::install taskwarrior::install
 
 # Run the neovim config tests (optionally only the given files, e.g. tests/test_lsp.lua)
 test *files: (neovim::test files)

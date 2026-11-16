@@ -1,0 +1,12 @@
+[Unit]
+Description=Back up ~/Mail, pass and gnupg with restic
+OnFailure=restic-failed@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/restic/env
+ExecStartPre=/bin/sh -c 'test -f "$$RESTIC_REPOSITORY/config" || { echo "No restic repository at $$RESTIC_REPOSITORY. Is the backup disk mounted?" >&2; exit 1; }'
+ExecStart=restic backup --quiet --exclude-file=%h/.config/restic/excludes %h/Mail %h/.password-store %h/.gnupg
+ExecStart=restic forget --quiet --prune --keep-daily 14 --keep-weekly 8 --keep-monthly 24 --keep-yearly 100
+Nice=19
+IOSchedulingClass=idle

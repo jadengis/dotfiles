@@ -1,0 +1,4 @@
+# Read by the restic systemd units and by `just backup::restic`.
+# (Valid both as a systemd EnvironmentFile and as a shell file.)
+RESTIC_REPOSITORY="/mnt/backup/restic"
+RESTIC_PASSWORD_COMMAND="pass show Backup/Restic"

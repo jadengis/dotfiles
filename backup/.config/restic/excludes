@@ -1,0 +1,7 @@
+# gpg-agent sockets and lock files
+.gnupg/S.*
+.gnupg/*.lock
+.gnupg/.#lk*
+.gnupg/public-keys.d/*.lock
+# mbsync lock files
+.mbsyncstate.lock

@@ -1,0 +1,10 @@
+[Unit]
+Description=Verify the restic repository (re-reads 5% of the data each run)
+OnFailure=restic-failed@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/restic/env
+ExecStart=restic check --read-data-subset=5%%
+Nice=19
+IOSchedulingClass=idle
