@@ -1,7 +1,7 @@
 [user]
 	name = John Dengis
 	email = john@deng.is
-	signingkey = B73CA3291071C67F
+	signingkey = 57EE441A816FACDA7376813FD5E00DBC17CFA02C
 [core]
 	editor = nvim
 [merge]
