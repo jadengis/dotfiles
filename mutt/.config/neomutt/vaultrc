@@ -1,0 +1,17 @@
+# vim: filetype=neomuttrc
+# Read-only view of the archive in ~/Mail/Vault. Start it with: mail-vault
+set my_cfg_dir = "~/.config/neomutt"
+
+source $my_cfg_dir/settings
+source $my_cfg_dir/bindings
+source $my_cfg_dir/macros
+source $my_cfg_dir/colors
+
+set read_only
+set folder = "~/Mail/Vault"
+set spool_file = +INBOX
+mailboxes =INBOX `~/.local/bin/mutt-mailboxes ~/Mail/Vault`
+
+# Search the vault's own notmuch index (~/.config/notmuch/vault/config)
+ifdef notmuch 'set nm_config_profile = "vault"'
+ifdef notmuch 'source ~/.config/neomutt/notmuch'

@@ -18,5 +18,5 @@ bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
 
-# rebind autocrypt because i dont need it
+# move autocrypt off its default key (A) so A can archive (see macros)
 bind index \CA autocrypt-acct-menu

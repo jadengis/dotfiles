@@ -1,12 +1,18 @@
-# HTML
-text/html; elinks -dump -dump-color-mode 1; copiousoutput;
+# The first matching entry is used when you open an attachment (v, then enter).
+# auto_view (inline HTML in the pager) uses the copiousoutput entry.
+#
+# mutt-open hands the desktop's default app (xdg-open) a copy of the file:
+# neomutt deletes the original as soon as the command returns, often before
+# the viewer has read it.
 
-# Calendar Invites
-application/ics; /usr/bin/gio open %s
+# HTML: open in the browser, or render as text in the pager
+text/html; ~/.local/bin/mutt-open %s; nametemplate=%s.html
+text/html; elinks -dump -dump-color-mode 1 -dump-charset utf-8 -force-html %s; copiousoutput; nametemplate=%s.html
 
-# PDFs
-application/pdf; /usr/bin/gio open %s
+# Calendar invites
+text/calendar; ~/.local/bin/mutt-open %s; nametemplate=%s.ics
+application/ics; ~/.local/bin/mutt-open %s; nametemplate=%s.ics
 
-# Images
-image/png; /usr/bin/gio open %s
-image/jpeg; /usr/bin/gio open %s
+# Documents and images
+application/pdf; ~/.local/bin/mutt-open %s; nametemplate=%s.pdf
+image/*; ~/.local/bin/mutt-open %s

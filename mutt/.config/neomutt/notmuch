@@ -1,0 +1,15 @@
+# vim: filetype=neomuttrc
+# notmuch search. The database comes from the notmuch config
+# (~/.config/notmuch/<profile>/config), so no path is needed here.
+
+set nm_query_type = threads          # show whole threads in search results
+
+# Saved searches across all folders, shown under the folders in the sidebar
+virtual-mailboxes \
+  "Unread"  "notmuch://?query=tag:unread and not folder:Trash and not folder:Spam" \
+  "Flagged" "notmuch://?query=tag:flagged"
+
+# \ : search every folder (e.g. from:alice, subject:invoice date:2024..)
+bind index \\ vfolder-from-query
+# + : pull the rest of a search result's thread in
+bind index,pager + entire-thread

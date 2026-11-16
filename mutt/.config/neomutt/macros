@@ -1,9 +1,12 @@
 # vim: filetype=neomuttrc
 
-macro pager \cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+# Links: open one in the browser (xdg-open), or copy one to the Wayland clipboard
+macro index,pager \cb "<pipe-message> urlscan --dedupe<enter>" "open a link with urlscan"
+macro attach,compose \cb "<pipe-entry> urlscan --dedupe<enter>" "open a link with urlscan"
+macro index,pager \cy "<pipe-message> urlscan --dedupe --single --run-safe 'wl-copy {}'<enter>" "copy a link to the clipboard"
 
-# Arcive and Trash messages
+# Archive tagged messages
 macro index,pager A ":set confirmappend=no delete=yes<enter><save-message>=Archive<enter>:set confirmappend=yes delete=ask-yes<enter>" "archive tagged messages"
 
-# Manually sync mailboxes
-macro index S "<shell-escape>mbsync -a<enter>" "sync mailboxes"
+# Sync now. Goes through the systemd unit so it never overlaps the timer's run.
+macro index S "<shell-escape>systemctl --user start mbsync.service || mbsync -a<enter>" "sync mailboxes"

@@ -1,10 +1,11 @@
 [Unit]
-Description=Mailbox synchronization service
+Description=Sync Fastmail into ~/Mail (mirror + vault) and index it
+OnFailure=mbsync-failed.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/mbsync -Va
-
-[Install]
-WantedBy=default.target
-
+ExecStart=mbsync --all
+ExecStartPost=notmuch new --quiet
+ExecStartPost=env NOTMUCH_PROFILE=vault notmuch new --quiet
+Nice=10
+IOSchedulingClass=idle

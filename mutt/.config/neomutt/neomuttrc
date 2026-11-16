@@ -1,4 +1,4 @@
-# vim: filetype=muttrc
+# vim: filetype=neomuttrc
 set my_cfg_dir = "~/.config/neomutt"
 
 source $my_cfg_dir/settings
@@ -6,5 +6,8 @@ source $my_cfg_dir/bindings
 source $my_cfg_dir/macros
 source $my_cfg_dir/colors
 
-# Load mail account
+# Mail account: the mirror in ~/Mail/Fastmail (see ~/.mbsyncrc)
 source $my_cfg_dir/fastmail
+
+# Full-text search across every folder (only if neomutt was built with notmuch)
+ifdef notmuch 'source ~/.config/neomutt/notmuch'

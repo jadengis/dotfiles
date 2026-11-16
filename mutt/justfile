@@ -1,20 +1,82 @@
 import '../common.just'
 
 # command:package
-linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp urlview:urlview gpg:gnupg2"
-macos_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp urlview:urlview gpg:gnupg"
+linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass wl-copy:wl-clipboard notify-send:libnotify"
+macos_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass"
 packages := if os() == "macos" { macos_packages } else { linux_packages }
-systemd_units := "mbsync.timer"
+
+# pass entries the mail tools read (see `just mutt::secrets`)
+secrets := "Mail/Fastmail/AppPassword"
+store := env("PASSWORD_STORE_DIR", home_directory() / ".password-store")
 
 # Link the mail config into $HOME and install its dependencies
 [default]
 setup: link install
 
-# Install neomutt and the mail tools, then start the mbsync timer
-install: check-deps enable-services
+# Install the mail tools, create the mail dirs, and start syncing
+install: check-deps dirs enable-services
 
 # Install any missing command-line dependencies
 check-deps: (_packages packages)
 
-# Enable and start the mbsync timer
-enable-services: (_systemd-units systemd_units)
+# Create the maildirs, header cache and notmuch databases
+dirs:
+    mkdir -p ~/Mail/Fastmail ~/Mail/Vault ~/.cache/neomutt ~/.local/state
+    mkdir -p ~/.local/share/notmuch/default ~/.local/share/notmuch/vault
+
+# Start the 5-minute sync timer, once the pass entries exist
+[linux]
+enable-services:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for s in {{ secrets }}; do
+        if [ ! -f "{{ store }}/$s.gpg" ]; then
+            echo "Not starting mbsync.timer: pass entry $s is missing."
+            echo "Run 'just mutt::secrets', add the entries, then 'just mutt::install'."
+            exit 0
+        fi
+    done
+    systemctl --user daemon-reload
+    systemctl --user enable --now mbsync.timer
+
+[macos]
+enable-services:
+    @echo "No systemd on macOS; run 'just mutt::sync' to sync"
+
+# Show which pass entries the mail setup needs, and how to add them
+secrets:
+    #!/usr/bin/env bash
+    set -uo pipefail
+    missing=0
+    for s in {{ secrets }}; do
+        if [ -f "{{ store }}/$s.gpg" ]; then echo "ok       $s"; else echo "missing  $s"; missing=1; fi
+    done
+    [ "$missing" = 0 ] && exit 0
+    cat <<'EOF'
+
+    Create a Fastmail app password with IMAP + SMTP access, then store it:
+
+      pass insert Mail/Fastmail/AppPassword
+    EOF
+    exit 1
+
+# Sync now, verbosely (use this for the first, long sync), then index
+sync:
+    mbsync --all --verbose
+    notmuch new
+    NOTMUCH_PROFILE=vault notmuch new
+
+# Show the sync timer, the last run, and message counts
+status:
+    #!/usr/bin/env bash
+    set -uo pipefail
+    systemctl --user list-timers mbsync.timer --no-pager 2>/dev/null
+    echo
+    systemctl --user status mbsync.service --no-pager --lines=5 2>/dev/null
+    echo
+    for d in ~/Mail/Fastmail ~/Mail/Vault; do
+        n=$(find "$d" -type f \( -path '*/cur/*' -o -path '*/new/*' \) 2>/dev/null | wc -l)
+        printf '%-28s %8s messages\n' "$d" "$n"
+    done
+    printf '%-28s %8s messages\n' "notmuch (mirror)" "$(notmuch count '*' 2>/dev/null || echo -)"
+    printf '%-28s %8s messages\n' "notmuch (vault)" "$(NOTMUCH_PROFILE=vault notmuch count '*' 2>/dev/null || echo -)"

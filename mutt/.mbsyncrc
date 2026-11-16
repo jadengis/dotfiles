@@ -1,27 +1,56 @@
-### Fastmail
+# Fastmail is synced into two local copies:
+#
+#   ~/Mail/Fastmail  mirror  two-way; what neomutt reads. Deletes and moves
+#                            go both ways, so this is NOT an archive.
+#   ~/Mail/Vault     vault   pull-only and never deletes: every message that
+#                            reached a real folder stays, even after it is
+#                            deleted or moved on the server. Browse with
+#                            `mail-vault` (read-only).
+#
+# The app password lives in pass, not in this public repo.
 
 IMAPAccount fastmail
 Host imap.fastmail.com
 Port 993
-UserCmd "pass Mail/Personal/Email"
-PassCmd "pass Mail/Personal/IMAP"
-SSLType IMAPS
+TLSType IMAPS
+User john@deng.is
+PassCmd "pass show Mail/Fastmail/AppPassword"
 
 IMAPStore fastmail-remote
 Account fastmail
 
+### Mirror
+
 MaildirStore fastmail-local
-Path ~/Mail/Personal/
-Inbox ~/Mail/Personal/INBOX
+Path ~/Mail/Fastmail/
+Inbox ~/Mail/Fastmail/INBOX
 Flatten .
 
 Channel fastmail
 Far :fastmail-remote:
 Near :fastmail-local:
 Patterns *
-SyncState *
 Create Both
+Remove None
 Expunge Both
+SyncState *
 CopyArrivalDate yes
 
-###
+### Vault
+
+MaildirStore vault-local
+Path ~/Mail/Vault/
+Inbox ~/Mail/Vault/INBOX
+Flatten .
+
+Channel vault
+Far :fastmail-remote:
+Near :vault-local:
+Patterns * !Drafts !Spam !Trash
+# Only download new messages: never push, never propagate flags or deletions.
+Sync PullNew
+Create Near
+Remove None
+Expunge None
+SyncState *
+CopyArrivalDate yes

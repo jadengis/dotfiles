@@ -1,0 +1,6 @@
+[Unit]
+Description=Desktop notification when the mail sync fails
+
+[Service]
+Type=oneshot
+ExecStart=notify-send --urgency=critical --app-name=mbsync "Mail sync failed" "Is gpg unlocked? Details: journalctl --user -u mbsync.service"

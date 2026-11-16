@@ -1,0 +1,21 @@
+#!/bin/sh
+# Open a neomutt attachment in the desktop's default app (mailcap helper).
+#
+# neomutt deletes the attachment's temp file as soon as the mailcap command
+# returns, and xdg-open returns before the viewer has read it. So give the
+# viewer its own copy, in a private runtime dir that is cleared on logout.
+set -eu
+
+dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/mutt-open"
+mkdir -p "$dir"
+chmod 700 "$dir"
+
+copy="$dir/$(basename "$1")"
+cp -- "$1" "$copy"
+
+if command -v xdg-open >/dev/null 2>&1; then
+    opener=xdg-open
+else
+    opener=open # macOS
+fi
+"$opener" "$copy" >/dev/null 2>&1 &

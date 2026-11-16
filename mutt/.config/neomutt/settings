@@ -1,17 +1,16 @@
-# vim: filetype=muttrc
+# vim: filetype=neomuttrc
 
-# set editor to neovim
+# Write mail in neovim
 set editor = "nvim"
 
 set real_name = "John Dengis"
-set imap_check_subscribed
 
-# Set preferred view modes
-auto_view text/html text/calendar application/ics # view html automatically
+# Prefer HTML, rendered as text through the copiousoutput entry in mailcap
+auto_view text/html
 alternative_order text/html text/plain text/enriched text/*
+set allow_ansi                       # elinks renders HTML with colour codes
 
 # Main options
-# set edit headers
 set mbox_type = Maildir
 set mail_check_stats
 set use_envelope_from
@@ -19,6 +18,7 @@ set sendmail = "msmtp"
 set fast_reply
 set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
+unset wait_key                       # only pause after a shell command fails
 
 set reply_to
 set reverse_name                     # reply with name from inbound email
@@ -35,8 +35,7 @@ set markers = no
 set smart_wrap = no
 
 set mailcap_path = ~/.config/neomutt/mailcap
-set header_cache = "~/.cache/mutt"
-set message_cachedir = "~/.cache/mutt"
+set header_cache = "~/.cache/neomutt/"
 
 # Index
 set index_format = "%4C %Z %{%b %d, %Y} %-20.20L %-40.40a (%?l?%4l&%4c?) %s"
@@ -46,6 +45,10 @@ set auto_tag = yes
 set pager_context = 3
 set pager_index_lines = 20
 
-# Sidebar
+# Sidebar: show INBOX.PlanEngine as an indented "PlanEngine" under INBOX
 set sidebar_visible
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set sidebar_short_path
+set sidebar_delim_chars = "."
+set sidebar_folder_indent
+set sidebar_indent_string = "  "

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Print every maildir folder under $1, except INBOX, as quoted neomutt
+# mailbox names ("=Archive" "=INBOX.PlanEngine" ...). Used by `mailboxes`.
+cd "$1" 2>/dev/null || exit 0
+for d in */; do
+    d=${d%/}
+    case $d in INBOX | '*') continue ;; esac
+    [ -d "$d/cur" ] || continue
+    printf '"=%s" ' "$d"
+done

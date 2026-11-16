@@ -1,0 +1,18 @@
+# notmuch: search index over the vault (~/Mail/Vault), kept separate from the
+# mirror's. Use it with NOTMUCH_PROFILE=vault, or `\` inside mail-vault.
+# Paths are relative to $HOME.
+
+[database]
+path=.local/share/notmuch/vault
+mail_root=Mail/Vault
+
+[new]
+tags=unread
+ignore=.uidvalidity;.mbsyncstate;.mbsyncstate.journal;.mbsyncstate.new;.mbsyncstate.lock
+
+[search]
+exclude_tags=deleted;spam
+
+[maildir]
+# never rename vault files: the archive stays exactly as downloaded
+synchronize_flags=false

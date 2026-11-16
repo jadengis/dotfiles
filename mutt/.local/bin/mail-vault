@@ -1,0 +1,3 @@
+#!/bin/sh
+# Browse the mail archive (~/Mail/Vault) in neomutt, read-only.
+exec neomutt -R -F "${XDG_CONFIG_HOME:-$HOME/.config}/neomutt/vaultrc" "$@"

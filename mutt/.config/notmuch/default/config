@@ -1,0 +1,18 @@
+# notmuch: search index over the mirror (~/Mail/Fastmail).
+# notmuch never moves or syncs mail; `notmuch new` (run after every mbsync)
+# just indexes what mbsync wrote. Paths are relative to $HOME.
+
+[database]
+path=.local/share/notmuch/default
+mail_root=Mail/Fastmail
+
+[new]
+tags=unread
+ignore=.uidvalidity;.mbsyncstate;.mbsyncstate.journal;.mbsyncstate.new;.mbsyncstate.lock
+
+[search]
+exclude_tags=deleted;spam
+
+[maildir]
+# keep notmuch tags (unread, flagged, replied...) and maildir flags in step
+synchronize_flags=true
