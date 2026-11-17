@@ -5,6 +5,8 @@ OnFailure=mbsync-failed.service
 [Service]
 Type=oneshot
 ExecStart=mbsync --all
+# Reset the failure count that mbsync-failed keeps
+ExecStartPost=rm -f %t/mbsync-failures
 ExecStartPost=notmuch new --quiet
 ExecStartPost=env NOTMUCH_PROFILE=vault notmuch new --quiet
 Nice=10

@@ -1,7 +1,7 @@
 import '../common.just'
 
 # command:package
-linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass wl-copy:wl-clipboard notify-send:libnotify"
+linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass wl-copy:wl-clipboard notify-send:libnotify gpgsm:gnupg2-smime"
 macos_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass"
 packages := if os() == "macos" { macos_packages } else { linux_packages }
 
@@ -19,7 +19,7 @@ install: check-deps dirs enable-services
 # Install any missing command-line dependencies
 check-deps: (_packages packages)
 
-# Create the maildirs, header cache and notmuch databases
+# Create the maildirs, header cache and notmuch index dirs
 dirs:
     mkdir -p ~/Mail/Fastmail ~/Mail/Vault ~/.cache/neomutt ~/.local/state
     mkdir -p ~/.local/share/notmuch/default ~/.local/share/notmuch/vault

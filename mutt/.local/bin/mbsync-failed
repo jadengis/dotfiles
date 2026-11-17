@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Run by mbsync-failed.service when a sync fails. A failed run is usually a
+# network blip (wifi drop, waking from suspend) that the next 5-minute run
+# fixes, so only notify after 3 failures in a row, once per outage, with the
+# error mbsync printed. mbsync.service deletes the counter after a good sync.
+set -uo pipefail
+count_file="${XDG_RUNTIME_DIR:-/tmp}/mbsync-failures"
+count=$(( $(cat "$count_file" 2>/dev/null || echo 0) + 1 ))
+echo "$count" >"$count_file"
+[ "$count" -eq 3 ] || exit 0
+
+error=$(journalctl --user --unit=mbsync.service --invocation=0 --output=cat --no-pager 2>/dev/null |
+    grep -i -E 'error|fail|timeout|refused|denied' | grep -v -E '^(mbsync\.service|Failed to start)' | tail -n 1)
+notify-send --urgency=critical --app-name=mbsync "Mail has not synced for 15 minutes" \
+    "${error:-Unknown error}"$'\n'"journalctl --user -u mbsync.service"

@@ -1,6 +1,8 @@
 # notmuch: search index over the mirror (~/Mail/Fastmail).
 # notmuch never moves or syncs mail; `notmuch new` (run after every mbsync)
 # just indexes what mbsync wrote. Paths are relative to $HOME.
+# The index lives outside ~/Mail: mbsync errors on a .notmuch folder inside a
+# maildir. neomutt is pointed at it with nm_default_url (neomutt/notmuch).
 
 [database]
 path=.local/share/notmuch/default

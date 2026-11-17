@@ -1,6 +1,6 @@
 # notmuch: search index over the vault (~/Mail/Vault), kept separate from the
 # mirror's. Use it with NOTMUCH_PROFILE=vault, or `\` inside mail-vault.
-# Paths are relative to $HOME.
+# Paths are relative to $HOME. The index lives outside ~/Mail (see default/config).
 
 [database]
 path=.local/share/notmuch/vault

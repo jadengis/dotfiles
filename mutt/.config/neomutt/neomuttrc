@@ -9,5 +9,7 @@ source $my_cfg_dir/colors
 # Mail account: the mirror in ~/Mail/Fastmail (see ~/.mbsyncrc)
 source $my_cfg_dir/fastmail
 
-# Full-text search across every folder (only if neomutt was built with notmuch)
+# Full-text search across every folder (only if neomutt was built with notmuch).
+# The index is outside ~/Mail (see ~/.config/notmuch/default/config).
+ifdef notmuch 'set nm_default_url = "notmuch://$HOME/.local/share/notmuch/default"'
 ifdef notmuch 'source ~/.config/neomutt/notmuch'

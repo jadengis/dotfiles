@@ -1,10 +1,13 @@
 #!/bin/sh
-# Print every maildir folder under $1, except INBOX, as quoted neomutt
-# mailbox names ("=Archive" "=INBOX.PlanEngine" ...). Used by `mailboxes`.
+# Print every maildir folder under $1 as quoted neomutt mailbox names, INBOX
+# and its subfolders first ("=INBOX" "=INBOX.PlanEngine" "=Archive" ...), so
+# the sidebar nests them under INBOX. Used by `mailboxes`.
 cd "$1" 2>/dev/null || exit 0
-for d in */; do
-    d=${d%/}
-    case $d in INBOX | '*') continue ;; esac
-    [ -d "$d/cur" ] || continue
-    printf '"=%s" ' "$d"
+for pass in inbox rest; do
+    for d in */; do
+        d=${d%/}
+        [ -d "$d/cur" ] || continue
+        case $d in INBOX | INBOX.*) [ $pass = inbox ] ;; *) [ $pass = rest ] ;; esac || continue
+        printf '"=%s" ' "$d"
+    done
 done

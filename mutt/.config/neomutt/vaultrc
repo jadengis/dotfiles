@@ -10,8 +10,9 @@ source $my_cfg_dir/colors
 set read_only
 set folder = "~/Mail/Vault"
 set spool_file = +INBOX
-mailboxes =INBOX `~/.local/bin/mutt-mailboxes ~/Mail/Vault`
+mailboxes `~/.local/bin/mutt-mailboxes ~/Mail/Vault`
 
 # Search the vault's own notmuch index (~/.config/notmuch/vault/config)
 ifdef notmuch 'set nm_config_profile = "vault"'
+ifdef notmuch 'set nm_default_url = "notmuch://$HOME/.local/share/notmuch/vault"'
 ifdef notmuch 'source ~/.config/neomutt/notmuch'

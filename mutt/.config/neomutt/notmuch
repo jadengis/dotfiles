@@ -1,6 +1,5 @@
 # vim: filetype=neomuttrc
-# notmuch search. The database comes from the notmuch config
-# (~/.config/notmuch/<profile>/config), so no path is needed here.
+# notmuch search. neomuttrc / vaultrc set nm_default_url to the index first.
 
 set nm_query_type = threads          # show whole threads in search results
 
