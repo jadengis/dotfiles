@@ -8,8 +8,16 @@ bind pager,browser gg top-page
 bind pager,browser G bottom-page
 
 # mail bindings
-# Alt-U: unsubscribe from the list this message came from (one-click, email or web page)
-macro index,pager <Esc>U "<pipe-message>~/.local/bin/mail-unsubscribe<enter>" "unsubscribe from this mailing list"
+# Alt-U: unsubscribe from the list this message came from (one-click, email or
+# web page). Press it twice: the first time says what it will do. Copies the
+# message to a file and shows the script's output with a backtick, so neomutt
+# stays on screen. Single quotes so the backtick runs on each press.
+macro index,pager <Esc>U '\
+<enter-command>set confirm_append=no confirm_create=no<enter>\
+<copy-message>~/.cache/neomutt/unsubscribe.mbox<enter>\
+<enter-command>set confirm_append=yes confirm_create=yes<enter>\
+<enter-command>echo "`~/.local/bin/mail-unsubscribe ~/.cache/neomutt/unsubscribe.mbox`"<enter>\
+' "unsubscribe from this mailing list"
 
 # sidebar mappings
 bind index,pager \Ck sidebar-prev
