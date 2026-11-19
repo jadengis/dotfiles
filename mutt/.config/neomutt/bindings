@@ -8,7 +8,8 @@ bind pager,browser gg top-page
 bind pager,browser G bottom-page
 
 # mail bindings
-bind pager <Esc>U list-unsubscribe 
+# Alt-U: unsubscribe from the list this message came from (one-click, email or web page)
+macro index,pager <Esc>U "<pipe-message>~/.local/bin/mail-unsubscribe<enter>" "unsubscribe from this mailing list"
 
 # sidebar mappings
 bind index,pager \Ck sidebar-prev

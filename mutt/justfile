@@ -1,7 +1,7 @@
 import '../common.just'
 
 # command:package
-linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass wl-copy:wl-clipboard notify-send:libnotify gpgsm:gnupg2-smime"
+linux_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass curl:curl python3:python3 wl-copy:wl-clipboard notify-send:libnotify gpgsm:gnupg2-smime"
 macos_packages := "neomutt:neomutt mbsync:isync msmtp:msmtp notmuch:notmuch urlscan:urlscan elinks:elinks pass:pass"
 packages := if os() == "macos" { macos_packages } else { linux_packages }
 
