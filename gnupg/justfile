@@ -1,16 +1,32 @@
 import '../common.just'
 
 # command:package
-packages := if os() == "macos" { "gpg:gnupg" } else { "gpg:gnupg2" }
+packages := if os() == "macos" { "gpg:gnupg" } else { "gpg:gnupg2 pinentry-gnome3:pinentry-gnome3" }
 
 # Link the gpg-agent config into $HOME and install gnupg
 [default]
 setup: link install
 
-# Install gnupg, lock down ~/.gnupg and reload the agent
-install: (_packages packages) permissions
+# Install gnupg, lock down ~/.gnupg, and enable the persistent gpg-agent socket
+install: (_packages packages) permissions enable-agent
 
 # gpg refuses to trust a ~/.gnupg that others can read (stow creates it 755)
 permissions:
     chmod 700 ~/.gnupg
+
+# Run gpg-agent via systemd socket activation so oneshot services (mbsync)
+# don't spawn an agent inside their own cgroup and kill it on exit.
+[linux]
+enable-agent:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! systemctl --user is-active gpg-agent.socket >/dev/null 2>&1; then
+        gpgconf --kill gpg-agent || true
+    fi
+    systemctl --user daemon-reload
+    systemctl --user enable --now gpg-agent.socket
+    systemctl --user try-reload-or-restart gpg-agent.service
+
+[macos]
+enable-agent:
     -gpg-connect-agent reloadagent /bye
